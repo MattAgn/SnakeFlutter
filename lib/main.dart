@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake_game/screens/game_board.dart';
 import 'package:snake_game/screens/landing.dart';
 
 void main() => runApp(MyApp());
@@ -12,7 +13,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.green,
       ),
-      home: Landing(),
+      initialRoute: "/game_board",
+      routes: {
+        "/": (context) => Landing(),
+        "/game_board": (context) => GameBoard()
+      },
     );
   }
 }
