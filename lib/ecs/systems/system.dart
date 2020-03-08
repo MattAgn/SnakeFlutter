@@ -1,6 +1,8 @@
+import 'package:snake_game/ecs/entities/entity.dart';
+
 class System {
-  getEntitiesByComponent<ComponentType>(entities) {
-    var matchingEntities = [];
+  List<Entity> getEntitiesByComponent<ComponentType>(entities) {
+    List<Entity> matchingEntities = [];
     entities.forEach((entity) {
       if (entity
           .getComponentTypes()
