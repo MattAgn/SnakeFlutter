@@ -10,4 +10,6 @@ class System {
     });
     return matchingEntities;
   }
+
+  handleEntities(entities) {}
 }
