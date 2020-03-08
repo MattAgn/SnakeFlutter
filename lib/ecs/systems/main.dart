@@ -1,4 +1,4 @@
-import 'package:snake_game/ecs/components/component.dart';
+import 'package:snake_game/ecs/components/eater.dart';
 import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
@@ -12,20 +12,31 @@ class GameSystem {
   static final Position initialApplePosition =
       Position(coordinates: Coordinates(x: 1, y: 0));
 
-  GameSystem() {
-    final snake = Snake(
-        movable: Movable(speed: Speed(dx: 0, dy: 0)),
-        positions: [GameSystem.initialSnakePosition]);
-    final apple = Apple(position: GameSystem.initialApplePosition);
-    this.entities = [snake, apple];
-  }
+  GameSystem();
 
   getEntitiesByComponent<ComponentType>() {
-    // var matchingEntities = this.entities.((entity) => entity);
+    var matchingEntities = [];
+    this.entities.forEach((entity) {
+      if (entity
+          .getComponentTypes()
+          .any((componentType) => componentType == ComponentType)) {
+        matchingEntities.add(entity);
+      }
+    });
+    return matchingEntities;
   }
 
   init() {
+    final snake = Snake(
+        movable: Movable(speed: Speed(dx: 0, dy: 0)),
+        positions: [GameSystem.initialSnakePosition]);
+
+    final apple = Apple(position: GameSystem.initialApplePosition);
+    this.entities = [snake, apple];
     print("init game");
     print(entities);
+    final eaters = this.getEntitiesByComponent<Eater>();
+    print("eaters");
+    print(eaters);
   }
 }

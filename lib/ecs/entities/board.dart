@@ -6,4 +6,9 @@ class Board extends Entity {
   List<Position> positions;
 
   Board({@required this.positions}) : assert(positions != null);
+
+  @override
+  getComponentTypes() {
+    return [Position];
+  }
 }

@@ -1,1 +1,1 @@
-class Component {}
+abstract class Component {}

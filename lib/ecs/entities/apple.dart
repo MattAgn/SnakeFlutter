@@ -8,4 +8,9 @@ class Apple extends Entity {
   Eatable eatable;
 
   Apple({@required this.position}) : assert(position != null);
+
+  @override
+  getComponentTypes() {
+    return [Position, Eatable];
+  }
 }
