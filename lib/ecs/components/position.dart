@@ -13,5 +13,5 @@ class Coordinates {
 
   Coordinates({@required this.x, @required this.y})
       : assert(x != null),
-        assert(y != null);
+        assert(x != null);
 }
