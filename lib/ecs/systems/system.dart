@@ -2,9 +2,7 @@ class System {
   List<ComponentType> getEntitiesByComponent<ComponentType>(entities) {
     List<ComponentType> matchingEntities = [];
     entities.forEach((entity) {
-      if (entity
-          .getComponentTypes()
-          .any((componentType) => componentType == ComponentType)) {
+      if (entity is ComponentType) {
         matchingEntities.add(entity);
       }
     });
