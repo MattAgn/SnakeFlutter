@@ -9,16 +9,16 @@ import 'package:snake_game/ecs/entities/entity.dart';
 class Snake extends Entity {
   Movable movable;
   Controllable controllable;
-  List<Position> positions;
+  Positions positions;
   NotEatable notEatble;
   Eater eater;
-  static final Position defaultPosition =
-      Position(coordinates: Coordinates(x: 0, y: 0));
+  static final Positions defaultPosition =
+      Positions(coordinatesList: [Coordinates(x: 0, y: 0)]);
 
   Snake({@required this.movable, @required this.positions});
 
   @override
   getComponentTypes() {
-    return [Movable, Controllable, Position, NotEatable, Eater];
+    return [Movable, Controllable, Positions, NotEatable, Eater];
   }
 }

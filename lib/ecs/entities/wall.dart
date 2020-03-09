@@ -4,13 +4,13 @@ import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 
 class Wall extends Entity {
-  NotEatable notEatble;
-  Position position;
+  NotEatable notEatable;
+  Positions positions;
 
-  Wall({@required this.position}) : assert(position = null);
+  Wall({@required this.positions}) : assert(positions = null);
 
   @override
   getComponentTypes() {
-    return [NotEatable, Position];
+    return [NotEatable, Positions];
   }
 }
