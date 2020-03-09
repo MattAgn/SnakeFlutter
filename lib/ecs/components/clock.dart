@@ -1,7 +1,3 @@
-import 'package:snake_game/ecs/components/component.dart';
-
-class Clock extends Component {
+class ClockComponent {
   int time;
-
-  Clock({this.time = 0});
 }

@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:snake_game/ecs/components/component.dart';
-
-class Movable extends Component {
+class MovableComponent {
   Speed speed;
-
-  Movable({@required this.speed}) : assert(speed != null);
 }
 
 class Speed {

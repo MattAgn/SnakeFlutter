@@ -1,1 +1,1 @@
-class Eatable {}
+class EatableComponent {}

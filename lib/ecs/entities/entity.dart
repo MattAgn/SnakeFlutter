@@ -1,3 +1,1 @@
-abstract class Entity {
-  getComponentTypes();
-}
+abstract class Entity {}

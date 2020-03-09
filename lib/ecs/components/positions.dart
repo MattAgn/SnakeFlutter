@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snake_game/ecs/components/component.dart';
 
-class Positions extends Component {
+class PositionsComponent {
   List<Coordinates> coordinatesList;
-
-  Positions({@required this.coordinatesList}) : assert(coordinatesList != null);
 }
 
 class Coordinates {

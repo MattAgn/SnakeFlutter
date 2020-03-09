@@ -1,6 +1,6 @@
 class System {
-  List<EntityType> getEntitiesByComponent<ComponentType, EntityType>(entities) {
-    List<EntityType> matchingEntities = [];
+  List<ComponentType> getEntitiesByComponent<ComponentType>(entities) {
+    List<ComponentType> matchingEntities = [];
     entities.forEach((entity) {
       if (entity
           .getComponentTypes()
@@ -14,17 +14,13 @@ class System {
   List<EntityType>
       getEntitiesByComponents<ComponentType1, ComponentType2, EntityType>(
           entities) {
-    List<EntityType> matchingEntities = [];
+    final matchingEntities = [];
     entities.forEach((entity) {
-      if (entity
-              .getComponentTypes()
-              .any((componentType) => componentType == ComponentType1) &&
-          entity
-              .getComponentTypes()
-              .any((componentType) => componentType == ComponentType2)) {
+      if (entity is ComponentType1 && entity is ComponentType2) {
         matchingEntities.add(entity);
       }
     });
+
     return matchingEntities;
   }
 
