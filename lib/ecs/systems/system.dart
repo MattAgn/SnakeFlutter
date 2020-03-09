@@ -12,10 +12,10 @@ class System {
   List<EntityType>
       getEntitiesByComponents<ComponentType1, ComponentType2, EntityType>(
           entities) {
-    final matchingEntities = [];
+    final List<EntityType> matchingEntities = [];
     entities.forEach((entity) {
       if (entity is ComponentType1 && entity is ComponentType2) {
-        matchingEntities.add(entity);
+        matchingEntities.add(entity as EntityType);
       }
     });
 

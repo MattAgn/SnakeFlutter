@@ -1,5 +1,5 @@
 class MovableComponent {
-  Speed speed;
+  Speed speed = Speed();
 }
 
 class Speed {

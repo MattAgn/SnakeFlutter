@@ -1,3 +1,4 @@
+import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/components/positions.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
@@ -21,6 +22,11 @@ class GameSystem extends System {
     final apple = AppleEntity();
     apple.coordinatesList = [initialApplePosition];
     snake.coordinatesList = [initialSnakePosition];
+    snake.speed = Speed(dx: 2, dy: 1);
     this.entities = [snake, apple];
+    moveSystem.handleEntities(entities);
+    moveSystem.handleEntities(entities);
+    moveSystem.handleEntities(entities);
+    moveSystem.handleEntities(entities);
   }
 }
