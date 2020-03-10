@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:snake_game/ecs/systems/main.dart';
 import 'package:snake_game/widgets/control_button.dart';
 
 class GameBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final GameSystem gameSystem = GameSystem();
+    gameSystem.init();
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -48,6 +51,8 @@ class GameBoard extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.stop), onPressed: gameSystem.stop),
     );
   }
 }
