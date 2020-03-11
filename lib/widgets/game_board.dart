@@ -29,10 +29,12 @@ class BoardPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    snakeCoordinates != null &&
-        this.drawRectangle(canvas, snakeCoordinates, Colors.green);
-    appleCoordinates != null &&
-        this.drawRectangle(canvas, appleCoordinates, Colors.red);
+    if (appleCoordinates != null) {
+      this.drawRectangle(canvas, appleCoordinates, Colors.red);
+    }
+    if (snakeCoordinates != null) {
+      this.drawRectangle(canvas, snakeCoordinates, Colors.green);
+    }
   }
 
   drawRectangle(canvas, Coordinates coordinates, Color color) {
