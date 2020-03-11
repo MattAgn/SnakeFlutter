@@ -8,15 +8,19 @@ import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/systems/move.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
+enum GameStatus { play, pause, stop, gameOver }
+
 class GameSystem extends System {
   static final initialSnakePosition = Coordinates(x: 1, y: 0);
   static final initialApplePosition = Coordinates(x: 1, y: 0);
   List<Entity> entities;
   MoveSystem moveSystem;
   Timer timer;
+  GameStatus gameStatus;
 
   GameSystem() {
     this.moveSystem = MoveSystem();
+    this.gameStatus = GameStatus.stop;
   }
 
   initEntities() {
@@ -25,12 +29,13 @@ class GameSystem extends System {
     final apple = AppleEntity();
     apple.coordinatesList = [initialApplePosition];
     snake.coordinatesList = [initialSnakePosition];
-    snake.speed = Speed(dx: 2, dy: 1);
+    snake.speed = Speed(dx: 1, dy: 0);
     this.entities = [snake, apple];
   }
 
   play() {
     print("play");
+    this.gameStatus = GameStatus.play;
     if (this.entities == null) {
       this.initEntities();
     }
@@ -42,12 +47,14 @@ class GameSystem extends System {
 
   stop() {
     print("stop");
+    this.gameStatus = GameStatus.stop;
     this.timer?.cancel();
     this.initEntities();
     notifyListeners();
   }
 
   pause() {
+    this.gameStatus = GameStatus.pause;
     print("pause");
     this.timer?.cancel();
     notifyListeners();
