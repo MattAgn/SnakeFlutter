@@ -44,6 +44,6 @@ class GameSystem extends System {
 
   pause() {
     print("pause");
-    this.timer.cancel();
+    this.timer?.cancel();
   }
 }
