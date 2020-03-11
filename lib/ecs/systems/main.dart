@@ -31,8 +31,12 @@ class GameSystem extends System {
 
   play() {
     print("play");
-    this.timer = Timer.periodic(Duration(seconds: 1), (_) {
+    if (this.entities == null) {
+      this.initEntities();
+    }
+    this.timer = Timer.periodic(Duration(milliseconds: 50), (_) {
       moveSystem.handleEntities(entities);
+      notifyListeners();
     });
   }
 
@@ -40,10 +44,24 @@ class GameSystem extends System {
     print("stop");
     this.timer?.cancel();
     this.initEntities();
+    notifyListeners();
   }
 
   pause() {
     print("pause");
     this.timer?.cancel();
+    notifyListeners();
+  }
+
+  get snakeCoordinates {
+    final snake = this.entities?.firstWhere((entity) => entity is SnakeEntity)
+        as SnakeEntity;
+    return snake?.coordinatesList?.first;
+  }
+
+  get appleCoordinates {
+    final apple = this.entities?.firstWhere((entity) => entity is AppleEntity)
+        as AppleEntity;
+    return apple?.coordinatesList?.first;
   }
 }

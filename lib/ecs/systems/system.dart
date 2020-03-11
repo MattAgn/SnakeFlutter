@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 
-class System {
+class System extends ChangeNotifier {
   List<ComponentType> getEntitiesByComponent<ComponentType>(entities) {
     return entities.where((entity) => entity is ComponentType).toList();
   }
