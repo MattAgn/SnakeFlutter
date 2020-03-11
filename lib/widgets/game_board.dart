@@ -14,6 +14,9 @@ class GameBoard extends StatelessWidget {
       child: CustomPaint(
         size: Size.infinite,
         painter: BoardPainter(
+            boardSquareSize:
+                (MediaQuery.of(context).size.height * 0.50 / BOARD_SIZE)
+                    .roundToDouble(),
             appleCoordinates: gameSystem.appleCoordinates,
             snakeCoordinates: gameSystem.snakeCoordinates),
       ),
@@ -24,8 +27,10 @@ class GameBoard extends StatelessWidget {
 class BoardPainter extends CustomPainter {
   Coordinates snakeCoordinates;
   Coordinates appleCoordinates;
+  double boardSquareSize;
 
-  BoardPainter({this.snakeCoordinates, this.appleCoordinates});
+  BoardPainter(
+      {this.snakeCoordinates, this.appleCoordinates, this.boardSquareSize});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -40,9 +45,13 @@ class BoardPainter extends CustomPainter {
   drawRectangle(canvas, Coordinates coordinates, Color color) {
     canvas.drawRect(
         Rect.fromCenter(
-            center: Offset(coordinates.x, coordinates.y),
-            width: 40,
-            height: 40),
+          width: 20,
+          height: 20,
+          center: Offset(
+            (coordinates.x + 0.5) * this.boardSquareSize,
+            (coordinates.y + 0.5) * this.boardSquareSize,
+          ),
+        ),
         Paint()
           ..color = color
           ..style = PaintingStyle.fill);

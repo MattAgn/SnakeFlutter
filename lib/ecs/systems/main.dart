@@ -9,10 +9,11 @@ import 'package:snake_game/ecs/systems/move.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 enum GameStatus { play, pause, stop, gameOver }
+const BOARD_SIZE = 40;
 
 class GameSystem extends System {
-  static final initialSnakePosition = Coordinates(x: 1, y: 0);
-  static final initialApplePosition = Coordinates(x: 1, y: 0);
+  static final initialSnakePosition = Coordinates(x: 1, y: 10);
+  static final initialApplePosition = Coordinates(x: 10, y: 1);
   List<Entity> entities;
   MoveSystem moveSystem;
   Timer timer;
@@ -39,7 +40,7 @@ class GameSystem extends System {
     if (this.entities == null) {
       this.initEntities();
     }
-    this.timer = Timer.periodic(Duration(milliseconds: 50), (_) {
+    this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
       moveSystem.handleEntities(entities);
       notifyListeners();
     });
