@@ -6,7 +6,6 @@ import 'package:snake_game/ecs/components/positions.dart';
 class MoveSystem extends System {
   @override
   handleEntities(entities) {
-    print("move system");
     final movableEntities = this.getEntitiesByComponents<MovableComponent,
         PositionsComponent, SnakeEntity>(entities);
 
@@ -20,7 +19,7 @@ class MoveSystem extends System {
 
       entity.coordinatesList.insert(0, newEntityHead);
       entity.coordinatesList.removeLast();
-      print(entity.coordinatesList.first.x);
+      print("New x position: " + entity.coordinatesList.first.x.toString());
     });
   }
 }

@@ -6,7 +6,7 @@ class GameBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GameSystem gameSystem = GameSystem();
-    gameSystem.init();
+    gameSystem.initEntities();
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -18,7 +18,7 @@ class GameBoard extends StatelessWidget {
           children: <Widget>[
             Container(
               color: Colors.black,
-              height: MediaQuery.of(context).size.height * 0.55,
+              height: MediaQuery.of(context).size.height * 0.50,
             ),
             Expanded(
               child: Container(
@@ -48,11 +48,29 @@ class GameBoard extends StatelessWidget {
                 ),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton.icon(
+                  label: Text("Play"),
+                  icon: Icon(Icons.play_circle_filled),
+                  onPressed: gameSystem.play,
+                ),
+                RaisedButton.icon(
+                  label: Text("Pause"),
+                  icon: Icon(Icons.pause_circle_filled),
+                  onPressed: gameSystem.pause,
+                ),
+                RaisedButton.icon(
+                  label: Text("Stop"),
+                  icon: Icon(Icons.stop),
+                  onPressed: gameSystem.stop,
+                )
+              ],
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.stop), onPressed: gameSystem.stop),
     );
   }
 }

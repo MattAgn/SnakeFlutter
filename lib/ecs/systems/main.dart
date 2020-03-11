@@ -19,21 +19,31 @@ class GameSystem extends System {
     this.moveSystem = MoveSystem();
   }
 
-  init() {
-    print("init game");
+  initEntities() {
+    print("init entities");
     final snake = SnakeEntity();
     final apple = AppleEntity();
     apple.coordinatesList = [initialApplePosition];
     snake.coordinatesList = [initialSnakePosition];
     snake.speed = Speed(dx: 2, dy: 1);
     this.entities = [snake, apple];
+  }
 
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
+  play() {
+    print("play");
+    this.timer = Timer.periodic(Duration(seconds: 1), (_) {
       moveSystem.handleEntities(entities);
     });
   }
 
   stop() {
-    timer?.cancel();
+    print("stop");
+    this.timer?.cancel();
+    this.initEntities();
+  }
+
+  pause() {
+    print("pause");
+    this.timer.cancel();
   }
 }
