@@ -16,9 +16,10 @@ class GameBoard extends StatelessWidget {
         painter: BoardPainter(
             boardSquareSize:
                 (MediaQuery.of(context).size.height * 0.50 / BOARD_SIZE)
-                    .roundToDouble(),
-            appleCoordinates: gameSystem.appleCoordinates,
-            snakeCoordinates: gameSystem.snakeCoordinates),
+                    .floorToDouble(),
+            appleCoordinates: gameSystem.apple?.leadPosition,
+            snakeCoordinates: gameSystem.snake?.leadPosition,
+            snakeBody: gameSystem.snake?.body),
       ),
     );
   }
@@ -27,10 +28,14 @@ class GameBoard extends StatelessWidget {
 class BoardPainter extends CustomPainter {
   Coordinates snakeCoordinates;
   Coordinates appleCoordinates;
+  List<Coordinates> snakeBody;
   double boardSquareSize;
 
   BoardPainter(
-      {this.snakeCoordinates, this.appleCoordinates, this.boardSquareSize});
+      {this.snakeCoordinates,
+      this.appleCoordinates,
+      this.boardSquareSize,
+      this.snakeBody});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -40,6 +45,9 @@ class BoardPainter extends CustomPainter {
     if (snakeCoordinates != null) {
       this.drawRectangle(canvas, snakeCoordinates, Colors.green);
     }
+    snakeBody?.forEach((bodyPart) {
+      this.drawRectangle(canvas, bodyPart, Colors.green);
+    });
   }
 
   drawRectangle(canvas, Coordinates coordinates, Color color) {

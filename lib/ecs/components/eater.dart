@@ -1,1 +1,3 @@
-class EaterComponent {}
+class EaterComponent {
+  bool hasEaten = false;
+}

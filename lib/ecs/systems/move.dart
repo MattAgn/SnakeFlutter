@@ -17,6 +17,11 @@ class MoveSystem extends System {
           x: previousEntityHead.x + entitySpeed.dx,
           y: previousEntityHead.y + entitySpeed.dy);
 
+      final previousLeadPosition = entity.leadPosition;
+      entity.body.insert(0, previousLeadPosition);
+      if (!entity.hasEaten) {
+        entity.body.removeLast();
+      }
       entity.leadPosition = newEntityHead;
 
       print("--------");

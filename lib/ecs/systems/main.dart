@@ -8,6 +8,7 @@ import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/systems/control.dart';
+import 'package:snake_game/ecs/systems/eat.dart';
 import 'package:snake_game/ecs/systems/move.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
@@ -15,28 +16,28 @@ enum GameStatus { play, pause, stop, gameOver }
 const BOARD_SIZE = 40;
 
 class GameSystem extends System {
-  static final initialSnakePosition = Coordinates(x: 1, y: 10);
+  static final initialSnakePosition = Coordinates(x: 1, y: 1);
+  static final initialSnakeSpeed = Speed(dx: 1, dy: 0);
   static final initialApplePosition = Coordinates(x: 10, y: 1);
   List<Entity> entities;
   MoveSystem moveSystem;
   ControlSystem controlSystem;
+  EatSystem eatSystem;
   Timer timer;
   GameStatus gameStatus;
 
   GameSystem() {
     this.moveSystem = MoveSystem();
     this.controlSystem = ControlSystem();
+    this.eatSystem = EatSystem();
     this.gameStatus = GameStatus.stop;
   }
 
   initEntities() {
     print("init entities");
-    final snake = SnakeEntity();
-    final apple = AppleEntity();
+    final snake = SnakeEntity(initialSnakePosition, initialSnakeSpeed);
+    final apple = AppleEntity(initialApplePosition);
     final controls = ControlsEntity();
-    apple.leadPosition = [initialApplePosition];
-    snake.leadPosition = [initialSnakePosition];
-    snake.speed = Speed(dx: 1, dy: 0);
     this.entities = [snake, apple, controls];
   }
 
@@ -49,6 +50,7 @@ class GameSystem extends System {
     this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
       controlSystem.handleEntities(entities);
       moveSystem.handleEntities(entities);
+      eatSystem.handleEntities(entities);
       notifyListeners();
     });
   }
@@ -68,16 +70,16 @@ class GameSystem extends System {
     notifyListeners();
   }
 
-  get snakeCoordinates {
+  SnakeEntity get snake {
     final snake = this.entities?.firstWhere((entity) => entity is SnakeEntity)
         as SnakeEntity;
-    return snake?.leadPosition;
+    return snake;
   }
 
-  get appleCoordinates {
+  AppleEntity get apple {
     final apple = this.entities?.firstWhere((entity) => entity is AppleEntity)
         as AppleEntity;
-    return apple?.leadPosition;
+    return apple;
   }
 
   set direction(Direction direction) {
