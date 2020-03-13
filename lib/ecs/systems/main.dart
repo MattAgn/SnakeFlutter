@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/components/movable.dart';
-import 'package:snake_game/ecs/components/positions.dart';
+import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';

@@ -1,6 +1,6 @@
 import 'package:snake_game/ecs/components/eatable.dart';
 import 'package:snake_game/ecs/components/eater.dart';
-import 'package:snake_game/ecs/components/positions.dart';
+import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/systems/system.dart';
@@ -14,8 +14,7 @@ class EatSystem extends System {
         LeadPositionComponent, SnakeEntity>(entities);
     eaterEntities.forEach((eater) {
       eatableEntities.forEach((eatable) {
-        if (eater.leadPosition.x == eatable.leadPosition.x &&
-            eater.leadPosition.y == eatable.leadPosition.y) {
+        if (eatable.leadPosition.equal(eater.leadPosition)) {
           eater.hasEaten = true;
         } else {
           eater.hasEaten = false;

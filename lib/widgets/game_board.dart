@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/ecs/components/positions.dart';
+import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 
 class GameBoard extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 import 'package:snake_game/ecs/components/movable.dart';
-import 'package:snake_game/ecs/components/positions.dart';
+import 'package:snake_game/ecs/components/position.dart';
 
 class MoveSystem extends System {
   @override
