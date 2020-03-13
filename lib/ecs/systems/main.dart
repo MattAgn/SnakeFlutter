@@ -34,8 +34,8 @@ class GameSystem extends System {
     final snake = SnakeEntity();
     final apple = AppleEntity();
     final controls = ControlsEntity();
-    apple.coordinatesList = [initialApplePosition];
-    snake.coordinatesList = [initialSnakePosition];
+    apple.leadPosition = [initialApplePosition];
+    snake.leadPosition = [initialSnakePosition];
     snake.speed = Speed(dx: 1, dy: 0);
     this.entities = [snake, apple, controls];
   }
@@ -71,13 +71,13 @@ class GameSystem extends System {
   get snakeCoordinates {
     final snake = this.entities?.firstWhere((entity) => entity is SnakeEntity)
         as SnakeEntity;
-    return snake?.coordinatesList?.first;
+    return snake?.leadPosition;
   }
 
   get appleCoordinates {
     final apple = this.entities?.firstWhere((entity) => entity is AppleEntity)
         as AppleEntity;
-    return apple?.coordinatesList?.first;
+    return apple?.leadPosition;
   }
 
   set direction(Direction direction) {

@@ -23,7 +23,8 @@ class Controls extends StatelessWidget {
             ControlButton(
               text: "<",
               onPress: () {
-                gameSystem.direction = Direction.left;
+                gameSystem.direction = Direction
+                    .left; // la direction des controls, c'est plus celle du snake que du game non? // fuadrait des getters sur nos entités direct en vrai
               },
             ),
             Expanded(

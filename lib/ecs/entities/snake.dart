@@ -9,6 +9,6 @@ class SnakeEntity extends Entity
     with
         MovableComponent,
         ControllableComponent,
-        PositionsComponent,
+        LeadPositionComponent,
         NotEatableComponent,
         EaterComponent {}

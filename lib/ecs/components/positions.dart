@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PositionsComponent {
-  List<Coordinates> coordinatesList;
+class LeadPositionComponent {
+  Coordinates leadPosition;
 }
 
 class Coordinates {
