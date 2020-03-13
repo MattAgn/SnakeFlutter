@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/components/positions.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
+import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
+import 'package:snake_game/ecs/systems/control.dart';
 import 'package:snake_game/ecs/systems/move.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
@@ -16,11 +19,13 @@ class GameSystem extends System {
   static final initialApplePosition = Coordinates(x: 10, y: 1);
   List<Entity> entities;
   MoveSystem moveSystem;
+  ControlSystem controlSystem;
   Timer timer;
   GameStatus gameStatus;
 
   GameSystem() {
     this.moveSystem = MoveSystem();
+    this.controlSystem = ControlSystem();
     this.gameStatus = GameStatus.stop;
   }
 
@@ -28,10 +33,11 @@ class GameSystem extends System {
     print("init entities");
     final snake = SnakeEntity();
     final apple = AppleEntity();
+    final controls = ControlsEntity();
     apple.coordinatesList = [initialApplePosition];
     snake.coordinatesList = [initialSnakePosition];
     snake.speed = Speed(dx: 1, dy: 0);
-    this.entities = [snake, apple];
+    this.entities = [snake, apple, controls];
   }
 
   play() {
@@ -71,5 +77,14 @@ class GameSystem extends System {
     final apple = this.entities?.firstWhere((entity) => entity is AppleEntity)
         as AppleEntity;
     return apple?.coordinatesList?.first;
+  }
+
+  set direction(Direction direction) {
+    final controls = this
+        .entities
+        ?.firstWhere((entity) => entity is ControlsEntity) as ControlsEntity;
+    controls.direction = direction;
+    controlSystem.handleEntities(entities);
+    notifyListeners();
   }
 }
