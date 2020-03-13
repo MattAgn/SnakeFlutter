@@ -47,6 +47,7 @@ class GameSystem extends System {
       this.initEntities();
     }
     this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
+      controlSystem.handleEntities(entities);
       moveSystem.handleEntities(entities);
       notifyListeners();
     });
@@ -83,7 +84,14 @@ class GameSystem extends System {
     final controls = this
         .entities
         ?.firstWhere((entity) => entity is ControlsEntity) as ControlsEntity;
-    controls.direction = direction;
+    if ((direction == Direction.down && controls.direction != Direction.up) ||
+        (direction == Direction.up && controls.direction != Direction.down) ||
+        (direction == Direction.rigth &&
+            controls.direction != Direction.left) ||
+        (direction == Direction.left &&
+            controls.direction != Direction.rigth)) {
+      controls.direction = direction;
+    }
     controlSystem.handleEntities(entities);
     notifyListeners();
   }

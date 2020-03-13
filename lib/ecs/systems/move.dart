@@ -19,6 +19,7 @@ class MoveSystem extends System {
 
       entity.coordinatesList.insert(0, newEntityHead);
       entity.coordinatesList.removeLast();
+      print("--------");
       print("New x position: " + entity.coordinatesList.first.x.toString());
       print("New y position: " + entity.coordinatesList.first.y.toString());
     });
