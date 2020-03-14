@@ -6,26 +6,51 @@ class LifecycleButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameSystem = Provider.of<GameSystem>(context, listen: true);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        gameSystem.gameStatus == GameStatus.play
-            ? RaisedButton.icon(
-                label: Text("Pause"),
-                icon: Icon(Icons.pause_circle_filled),
-                onPressed: gameSystem.pause,
-              )
-            : RaisedButton.icon(
-                label: Text("Play"),
-                icon: Icon(Icons.play_circle_filled),
-                onPressed: gameSystem.play,
-              ),
-        RaisedButton.icon(
-          label: Text("Stop"),
-          icon: Icon(Icons.stop),
-          onPressed: gameSystem.stop,
-        )
-      ],
+    final lifeCycleButtons = _getLifeCycleButtons(gameSystem);
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 500),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ...lifeCycleButtons,
+        ],
+      ),
     );
+  }
+
+  List<RaisedButton> _getLifeCycleButtons(GameSystem gameSystem) {
+    final gameStatus = gameSystem.gameStatus;
+
+    if (gameStatus == GameStatus.gameOver) {
+      return [
+        RaisedButton.icon(
+          label: Text("Replay"),
+          icon: Icon(Icons.replay),
+          onPressed: gameSystem.replay,
+        )
+      ];
+    }
+
+    final List<RaisedButton> lifeCycleButtons = [];
+    if (gameStatus == GameStatus.play) {
+      lifeCycleButtons.add(RaisedButton.icon(
+        label: Text("Pause"),
+        icon: Icon(Icons.pause),
+        onPressed: gameSystem.pause,
+      ));
+    } else {
+      lifeCycleButtons.add(RaisedButton.icon(
+        label: Text("Play"),
+        icon: Icon(Icons.play_arrow),
+        onPressed: gameSystem.play,
+      ));
+    }
+    lifeCycleButtons.add(RaisedButton.icon(
+      label: Text("Stop"),
+      icon: Icon(Icons.stop),
+      onPressed: gameSystem.stop,
+    ));
+
+    return lifeCycleButtons;
   }
 }

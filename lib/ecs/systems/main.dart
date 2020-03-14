@@ -60,12 +60,17 @@ class GameSystem extends System {
       deathSystem.handleDeadEntities(entities, (deadEntity) {
         if (deadEntity is SnakeEntity) {
           print('Game Over');
-          this.gameStatus = GameStatus.stop;
+          this.gameStatus = GameStatus.gameOver;
           this.timer?.cancel();
         }
       });
       notifyListeners();
     });
+  }
+
+  replay() {
+    this.initEntities();
+    play();
   }
 
   stop() {
