@@ -1,4 +1,4 @@
-class ControllerComponent {
+mixin ControllerComponent {
   Direction direction = Direction.rigth;
 }
 

@@ -10,23 +10,21 @@ class MoveSystem extends System {
         LeadPositionComponent, SnakeEntity>(entities);
 
     movableEntities.forEach((entity) {
-      final previousEntityHead = entity.leadPosition;
-      final entitySpeed = entity.speed;
+      if (!entity.isDead) {
+        final previousEntityHead = entity.leadPosition;
+        final entitySpeed = entity.speed;
 
-      final newEntityHead = Coordinates(
-          x: previousEntityHead.x + entitySpeed.dx,
-          y: previousEntityHead.y + entitySpeed.dy);
+        final newEntityHead = Coordinates(
+            x: previousEntityHead.x + entitySpeed.dx,
+            y: previousEntityHead.y + entitySpeed.dy);
 
-      final previousLeadPosition = entity.leadPosition;
-      entity.body.insert(0, previousLeadPosition);
-      if (!entity.hasEaten) {
-        entity.body.removeLast();
+        final previousLeadPosition = entity.leadPosition;
+        entity.body.insert(0, previousLeadPosition);
+        if (!entity.hasEaten) {
+          entity.body.removeLast();
+        }
+        entity.leadPosition = newEntityHead;
       }
-      entity.leadPosition = newEntityHead;
-
-      print("--------");
-      print("New x position: " + entity.leadPosition.toString());
-      print("New y position: " + entity.leadPosition.toString());
     });
   }
 }

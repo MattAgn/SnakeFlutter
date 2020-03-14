@@ -1,4 +1,4 @@
-class MovableComponent {
+mixin MovableComponent {
   Speed speed = Speed();
 }
 

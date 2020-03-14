@@ -1,3 +1,3 @@
-class ClockComponent {
+mixin ClockComponent {
   int time;
 }
