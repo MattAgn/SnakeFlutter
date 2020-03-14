@@ -19,5 +19,5 @@ class System extends ChangeNotifier {
         .toList();
   }
 
-  handleEntities(entities) {}
+  void handleEntities(List<Entity> entities) {}
 }
