@@ -1,1 +1,1 @@
-class ControllableComponent {}
+mixin ControllableComponent {}
