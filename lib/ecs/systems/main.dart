@@ -85,8 +85,11 @@ class GameSystem extends System {
   }
 
   List<WallEntity> get walls {
-    final walls = this.entities?.where((entity) => entity is WallEntity)
-        as List<WallEntity>;
+    final walls = this
+        .entities
+        ?.where((entity) => entity is WallEntity)
+        ?.map((entity) => entity as WallEntity)
+        ?.toList();
     return walls;
   }
 
@@ -107,6 +110,15 @@ class GameSystem extends System {
   }
 
   List<WallEntity> _initWall() {
-    return [WallEntity(Coordinates(x: 10, y: 10))];
+    return [
+      WallEntity(Coordinates(x: 10, y: 10)),
+      WallEntity(Coordinates(x: 11, y: 10)),
+      WallEntity(Coordinates(x: 12, y: 10)),
+      WallEntity(Coordinates(x: 13, y: 10)),
+      WallEntity(Coordinates(x: 14, y: 10)),
+      WallEntity(Coordinates(x: 15, y: 10)),
+      WallEntity(Coordinates(x: 16, y: 10)),
+      WallEntity(Coordinates(x: 17, y: 10)),
+    ];
   }
 }
