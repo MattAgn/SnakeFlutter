@@ -6,7 +6,11 @@ import 'package:snake_game/ecs/systems/main.dart';
 class GameBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final gameSystem = Provider.of<GameSystem>(context);
+    final gameSystem = Provider.of<GameSystem>(context, listen: true);
+
+    if (gameSystem.gameStatus == GameStatus.gameOver) {
+      Future.delayed(Duration.zero, () => _gameOver(context));
+    }
 
     return Container(
       color: Colors.black,
@@ -23,6 +27,27 @@ class GameBoard extends StatelessWidget {
                 gameSystem.walls?.map((wall) => wall.leadPosition)?.toList(),
             snakeBody: gameSystem.snake?.body),
       ),
+    );
+  }
+
+  Future<void> _gameOver(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              'Game Over!',
+              style: TextStyle(
+                color: Colors.redAccent,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+        );
+      },
     );
   }
 }
