@@ -36,9 +36,10 @@ class MoveSystem extends System {
         }
         entity.leadPosition = newEntityHead;
 
-        print("--------");
-        print("New x position: " + entity.leadPosition.x.toString());
-        print("New y position: " + entity.leadPosition.y.toString());
+        // Debug logs
+        // print("--------");
+        // print("New x position: " + entity.leadPosition.x.toString());
+        // print("New y position: " + entity.leadPosition.y.toString());
       }
     });
   }
