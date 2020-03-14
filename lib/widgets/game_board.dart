@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/components/position.dart';
@@ -12,19 +14,24 @@ class GameBoard extends StatelessWidget {
       Future.delayed(Duration.zero, () => _gameOver(context));
     }
 
+    final boardPixelSize = min(MediaQuery.of(context).size.height * 0.5,
+        MediaQuery.of(context).size.width);
+
     return Container(
       color: Colors.black,
-      height: MediaQuery.of(context).size.height * 0.50,
+      height: boardPixelSize,
+      width: boardPixelSize,
       child: CustomPaint(
-        size: Size.infinite,
+        size: Size.square(boardPixelSize),
         painter: BoardPainter(
-            boardSquareSize:
-                (MediaQuery.of(context).size.height * 0.50 / BOARD_SIZE)
-                    .floorToDouble(),
+            boardSquareSize: (boardPixelSize / BOARD_SIZE).floorToDouble(),
             appleCoordinates: gameSystem.apple?.leadPosition,
             snakeCoordinates: gameSystem.snake?.leadPosition,
             wallsCoordinates:
                 gameSystem.walls?.map((wall) => wall.leadPosition)?.toList(),
+            portalsCoordinates: gameSystem.portals
+                ?.map((portal) => portal.leadPosition)
+                ?.toList(),
             snakeBody: gameSystem.snake?.body),
       ),
     );
@@ -57,6 +64,7 @@ class BoardPainter extends CustomPainter {
   Coordinates appleCoordinates;
   List<Coordinates> wallsCoordinates;
   List<Coordinates> snakeBody;
+  List<Coordinates> portalsCoordinates;
   double boardSquareSize;
 
   BoardPainter(
@@ -64,7 +72,8 @@ class BoardPainter extends CustomPainter {
       this.appleCoordinates,
       this.wallsCoordinates,
       this.boardSquareSize,
-      this.snakeBody});
+      this.snakeBody,
+      this.portalsCoordinates});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -77,6 +86,9 @@ class BoardPainter extends CustomPainter {
     wallsCoordinates?.forEach((wallCoordinates) {
       this.drawRectangle(canvas, wallCoordinates, Colors.orange);
     });
+    portalsCoordinates?.forEach((portalCoordinates) {
+      this.drawRectangle(canvas, portalCoordinates, Colors.blue);
+    });
     snakeBody?.forEach((bodyPart) {
       this.drawRectangle(canvas, bodyPart, Colors.green);
     });
@@ -85,11 +97,11 @@ class BoardPainter extends CustomPainter {
   drawRectangle(canvas, Coordinates coordinates, Color color) {
     canvas.drawRect(
         Rect.fromCenter(
-          width: 20,
-          height: 20,
+          width: this.boardSquareSize,
+          height: this.boardSquareSize,
           center: Offset(
-            (coordinates.x + 0.5) * this.boardSquareSize,
-            (coordinates.y + 0.5) * this.boardSquareSize,
+            (coordinates.x.toDouble() + 0.5) * this.boardSquareSize,
+            (coordinates.y.toDouble() + 0.5) * this.boardSquareSize,
           ),
         ),
         Paint()

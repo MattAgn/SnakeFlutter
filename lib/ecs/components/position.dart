@@ -5,8 +5,8 @@ mixin LeadPositionComponent {
 }
 
 class Coordinates {
-  double x;
-  double y;
+  int x;
+  int y;
 
   Coordinates({@required this.x, @required this.y})
       : assert(x != null),
