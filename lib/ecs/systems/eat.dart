@@ -18,7 +18,7 @@ class EatSystem extends System {
       eatableEntities.forEach((eatable) {
         eater.hasEaten = eater.leadPosition.equal(eatable.leadPosition);
         if (eater.hasEaten && eatable is SpanwableComponent) {
-          eatable.leadPosition = InitSystem.getRandomCoordinates();
+          eatable.leadPosition = InitSystem.getRandomCoordinates(entities);
         }
       });
     });

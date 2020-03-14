@@ -66,9 +66,24 @@ class InitSystem extends System {
     return portals;
   }
 
-  static getRandomCoordinates() {
-    return Coordinates(
-        x: Random().nextInt(BOARD_SIZE - 1) + 1,
-        y: Random().nextInt(BOARD_SIZE - 1) + 1);
+  static getRandomCoordinates(List<Entity> entities) {
+    final List<Coordinates> unavailablePositions = entities
+        .where((entity) => entity is LeadPositionComponent)
+        .map((entity) => entity
+            as LeadPositionComponent) // TODO: trouver comment mieux typer
+        .map((entity) => entity.leadPosition)
+        .toList();
+    return _getAvailableCoordinates(unavailablePositions);
+  }
+
+  static Coordinates _getAvailableCoordinates(
+      List<Coordinates> unavailablePositions) {
+    final randomCoordinates = Coordinates(
+        x: Random().nextInt(BOARD_SIZE - 2) + 1,
+        y: Random().nextInt(BOARD_SIZE - 2) + 1);
+    if (unavailablePositions.contains(randomCoordinates)) {
+      return _getAvailableCoordinates(unavailablePositions);
+    }
+    return randomCoordinates;
   }
 }
