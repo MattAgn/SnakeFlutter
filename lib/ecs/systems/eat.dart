@@ -14,11 +14,7 @@ class EatSystem extends System {
         LeadPositionComponent, SnakeEntity>(entities);
     eaterEntities.forEach((eater) {
       eatableEntities.forEach((eatable) {
-        if (eatable.leadPosition.equal(eater.leadPosition)) {
-          eater.hasEaten = true;
-        } else {
-          eater.hasEaten = false;
-        }
+        eater.hasEaten = eatable.leadPosition.equal(eater.leadPosition);
       });
     });
   }
