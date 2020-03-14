@@ -7,6 +7,7 @@ import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
+import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/control.dart';
 import 'package:snake_game/ecs/systems/eat.dart';
 import 'package:snake_game/ecs/systems/move.dart';
@@ -37,8 +38,9 @@ class GameSystem extends System {
     print("init entities");
     final snake = SnakeEntity(initialSnakePosition, initialSnakeSpeed);
     final apple = AppleEntity(initialApplePosition);
+    final walls = _initWall();
     final controls = ControlsEntity();
-    this.entities = [snake, apple, controls];
+    this.entities = [snake, apple, ...walls, controls];
   }
 
   play() {
@@ -82,6 +84,12 @@ class GameSystem extends System {
     return apple;
   }
 
+  List<WallEntity> get walls {
+    final walls = this.entities?.where((entity) => entity is WallEntity)
+        as List<WallEntity>;
+    return walls;
+  }
+
   set direction(Direction direction) {
     final controls = this
         .entities
@@ -96,5 +104,9 @@ class GameSystem extends System {
     }
     controlSystem.handleEntities(entities);
     notifyListeners();
+  }
+
+  List<WallEntity> _initWall() {
+    return [WallEntity(Coordinates(x: 10, y: 10))];
   }
 }
