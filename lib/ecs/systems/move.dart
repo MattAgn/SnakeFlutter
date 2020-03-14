@@ -23,10 +23,6 @@ class MoveSystem extends System {
         entity.body.removeLast();
       }
       entity.leadPosition = newEntityHead;
-
-      print("--------");
-      print("New x position: " + entity.leadPosition.toString());
-      print("New y position: " + entity.leadPosition.toString());
     });
   }
 }
