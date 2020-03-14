@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LeadPositionComponent {
+mixin LeadPositionComponent {
   Coordinates leadPosition;
 }
 

@@ -1,1 +1,1 @@
-class EatableComponent {}
+mixin EatableComponent {}
