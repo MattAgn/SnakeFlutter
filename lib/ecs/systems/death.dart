@@ -21,13 +21,20 @@ class DeathSystem extends System {
   @override
   handleEntities(entities) {
     final notEatableEntities = this.getEntitiesByComponents<NotEatableComponent,
-        LeadPositionComponent, WallEntity>(entities);
+        LeadPositionComponent, LeadPositionComponent>(entities);
     final eaterEntities = this.getEntitiesByComponents<EaterComponent,
         LeadPositionComponent, SnakeEntity>(entities);
     eaterEntities.forEach((eater) {
       notEatableEntities.forEach((notEatable) {
-        if (notEatable.leadPosition.equal(eater.leadPosition)) {
-          eater.isDead = true;
+        if (notEatable is SnakeEntity) {
+          if (notEatable.body
+              .any((bodyPosition) => bodyPosition.equal(eater.leadPosition))) {
+            eater.isDead = true;
+          }
+        } else {
+          if (notEatable.leadPosition.equal(eater.leadPosition)) {
+            eater.isDead = true;
+          }
         }
       });
     });
