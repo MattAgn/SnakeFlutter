@@ -14,43 +14,77 @@ class Controls extends StatelessWidget {
     final gameSystem = Provider.of<GameSystem>(context, listen: false);
 
     return Expanded(
-      child: Container(
+      child: Padding(
         padding: EdgeInsets.all(10),
         child: Row(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            ControlButton(
-              text: "<",
-              onPress: () {
-                gameSystem.direction = Direction
-                    .left; // la direction des controls, c'est plus celle du snake que du game non? // fuadrait des getters sur nos entités direct en vrai
-              },
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Expanded(flex: 5, child: SizedBox()),
+                  Expanded(
+                    flex: 8,
+                    child: ControlButton(
+                      child: Icon(Icons.arrow_back),
+                      onPress: () {
+                        gameSystem.direction = Direction
+                            .left; // la direction des controls, c'est plus celle du snake que du game non? // fuadrait des getters sur nos entités direct en vrai
+                      },
+                    ),
+                  ),
+                  Expanded(flex: 5, child: SizedBox()),
+                ],
+              ),
             ),
             Expanded(
+              flex: 1,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  ControlButton(
-                    text: "^",
-                    onPress: () {
-                      gameSystem.direction = Direction.up;
-                    },
+                  Expanded(
+                    flex: 4,
+                    child: ControlButton(
+                      child: Icon(Icons.arrow_upward),
+                      onPress: () {
+                        gameSystem.direction = Direction.up;
+                      },
+                    ),
                   ),
-                  ControlButton(
-                    text: "v",
-                    onPress: () {
-                      gameSystem.direction = Direction.down;
-                    },
+                  Expanded(flex: 1, child: SizedBox()),
+                  Expanded(
+                    flex: 4,
+                    child: ControlButton(
+                      child: Icon(Icons.arrow_downward),
+                      onPress: () {
+                        gameSystem.direction = Direction.down;
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
-            ControlButton(
-              text: ">",
-              onPress: () {
-                gameSystem.direction = Direction.rigth;
-              },
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(flex: 5, child: SizedBox()),
+                  Expanded(
+                    flex: 8,
+                    child: ControlButton(
+                      child: Icon(Icons.arrow_forward),
+                      onPress: () {
+                        gameSystem.direction = Direction.rigth;
+                      },
+                    ),
+                  ),
+                  Expanded(flex: 5, child: SizedBox()),
+                ],
+              ),
             ),
           ],
         ),
