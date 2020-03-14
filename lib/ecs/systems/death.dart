@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:snake_game/ecs/components/body.dart';
 import 'package:snake_game/ecs/components/eater.dart';
 import 'package:snake_game/ecs/components/not_eatable.dart';
@@ -7,13 +8,14 @@ import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class DeathSystem extends System {
-  handleDeadEntities(
-      List<Entity> entities, void Function(Entity) deadEntityHandler) {
+  handleDeadEntities(List<Entity> entities, VoidCallback handleGameOver) {
     final eaterEntities = this.getEntitiesByComponents<EaterComponent,
-        LeadPositionComponent, SnakeEntity>(entities);
+        LeadPositionComponent, EaterComponent>(entities);
     eaterEntities.forEach((eater) {
       if (eater.isDead) {
-        deadEntityHandler(eater);
+        if (eater is SnakeEntity) {
+          handleGameOver();
+        }
       }
     });
   }
