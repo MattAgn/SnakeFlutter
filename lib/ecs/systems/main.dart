@@ -9,6 +9,7 @@ import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/control.dart';
+import 'package:snake_game/ecs/systems/death.dart';
 import 'package:snake_game/ecs/systems/eat.dart';
 import 'package:snake_game/ecs/systems/move.dart';
 import 'package:snake_game/ecs/systems/system.dart';
@@ -24,6 +25,7 @@ class GameSystem extends System {
   MoveSystem moveSystem;
   ControlSystem controlSystem;
   EatSystem eatSystem;
+  DeathSystem deathSystem;
   Timer timer;
   GameStatus gameStatus;
 
@@ -31,6 +33,7 @@ class GameSystem extends System {
     this.moveSystem = MoveSystem();
     this.controlSystem = ControlSystem();
     this.eatSystem = EatSystem();
+    this.deathSystem = DeathSystem();
     this.gameStatus = GameStatus.stop;
   }
 
@@ -53,6 +56,7 @@ class GameSystem extends System {
       controlSystem.handleEntities(entities);
       moveSystem.handleEntities(entities);
       eatSystem.handleEntities(entities);
+      deathSystem.handleEntities(entities);
       notifyListeners();
     });
   }
