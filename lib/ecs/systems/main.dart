@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:snake_game/ecs/components/controller.dart';
-import 'package:snake_game/ecs/components/movable.dart';
-import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
@@ -12,21 +10,19 @@ import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/control.dart';
 import 'package:snake_game/ecs/systems/death.dart';
 import 'package:snake_game/ecs/systems/eat.dart';
+import 'package:snake_game/ecs/systems/init.dart';
 import 'package:snake_game/ecs/systems/move.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 enum GameStatus { play, pause, stop, gameOver }
-const BOARD_SIZE = 30;
 
 class GameSystem extends System {
-  static final initialSnakePosition = Coordinates(x: 2, y: 2);
-  static final initialSnakeSpeed = Speed(dx: 1, dy: 0);
-  static final initialApplePosition = Coordinates(x: 10, y: 2);
   List<Entity> entities;
   MoveSystem moveSystem;
   ControlSystem controlSystem;
   EatSystem eatSystem;
   DeathSystem deathSystem;
+  InitSystem initSystem;
   Timer timer;
   GameStatus gameStatus;
 
@@ -35,24 +31,15 @@ class GameSystem extends System {
     this.controlSystem = ControlSystem();
     this.eatSystem = EatSystem();
     this.deathSystem = DeathSystem();
+    this.initSystem = InitSystem();
     this.gameStatus = GameStatus.stop;
-  }
-
-  initEntities() {
-    print("init entities");
-    final snake = SnakeEntity(initialSnakePosition, initialSnakeSpeed);
-    final apple = AppleEntity(initialApplePosition);
-    final controls = ControlsEntity();
-    final walls = _initWalls();
-    final portals = _initPortals();
-    this.entities = [snake, apple, controls, ...portals, ...walls];
   }
 
   play() {
     print("play");
     this.gameStatus = GameStatus.play;
     if (this.entities == null) {
-      this.initEntities();
+      this.entities = this.initSystem.initEntities();
     }
     this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
       controlSystem.handleEntities(entities);
@@ -65,7 +52,7 @@ class GameSystem extends System {
   }
 
   replay() {
-    this.initEntities();
+    this.entities = this.initSystem.initEntities();
     play();
   }
 
@@ -79,7 +66,7 @@ class GameSystem extends System {
     print("stop");
     this.gameStatus = GameStatus.stop;
     this.timer?.cancel();
-    this.initEntities();
+    this.entities = this.initSystem.initEntities();
     notifyListeners();
   }
 
@@ -136,33 +123,5 @@ class GameSystem extends System {
     }
     controlSystem.handleEntities(entities);
     notifyListeners();
-  }
-
-  List<WallEntity> _initWalls() {
-    return [
-      WallEntity(Coordinates(x: 10, y: 10)),
-      WallEntity(Coordinates(x: 11, y: 10)),
-      WallEntity(Coordinates(x: 12, y: 10)),
-      WallEntity(Coordinates(x: 13, y: 10)),
-      WallEntity(Coordinates(x: 14, y: 10)),
-      WallEntity(Coordinates(x: 15, y: 10)),
-      WallEntity(Coordinates(x: 16, y: 10)),
-      WallEntity(Coordinates(x: 17, y: 10)),
-    ];
-  }
-
-  _initPortals() {
-    final List<Entity> portals = [];
-    for (var i = 0; i <= BOARD_SIZE; i++) {
-      portals.add(PortalEntity(
-          Coordinates(x: BOARD_SIZE, y: i), Coordinates(x: 1, y: i)));
-      portals.add(PortalEntity(
-          Coordinates(x: i, y: BOARD_SIZE), Coordinates(x: i, y: 1)));
-      portals.add(PortalEntity(
-          Coordinates(x: 0, y: i), Coordinates(x: BOARD_SIZE - 1, y: i)));
-      portals.add(PortalEntity(
-          Coordinates(x: i, y: 0), Coordinates(x: i, y: BOARD_SIZE - 1)));
-    }
-    return portals;
   }
 }
