@@ -1,9 +1,9 @@
+import 'package:snake_game/ecs/components/body.dart';
 import 'package:snake_game/ecs/components/eater.dart';
 import 'package:snake_game/ecs/components/not_eatable.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
-import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class DeathSystem extends System {
@@ -21,20 +21,20 @@ class DeathSystem extends System {
   @override
   handleEntities(entities) {
     final notEatableEntities = this.getEntitiesByComponents<NotEatableComponent,
-        LeadPositionComponent, LeadPositionComponent>(entities);
+        LeadPositionComponent, dynamic>(entities);
     final eaterEntities = this.getEntitiesByComponents<EaterComponent,
         LeadPositionComponent, SnakeEntity>(entities);
     eaterEntities.forEach((eater) {
       notEatableEntities.forEach((notEatable) {
-        if (notEatable is SnakeEntity) {
+        if (notEatable is BodyComponent) {
           if (notEatable.body
               .any((bodyPosition) => bodyPosition.equal(eater.leadPosition))) {
             eater.isDead = true;
           }
-        } else {
-          if (notEatable.leadPosition.equal(eater.leadPosition)) {
-            eater.isDead = true;
-          }
+        }
+        if (notEatable != eater &&
+            notEatable.leadPosition.equal(eater.leadPosition)) {
+          eater.isDead = true;
         }
       });
     });
