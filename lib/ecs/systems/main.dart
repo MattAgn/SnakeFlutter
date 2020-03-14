@@ -113,7 +113,9 @@ class GameSystem extends System {
     final controls = this
         .entities
         ?.firstWhere((entity) => entity is ControlsEntity) as ControlsEntity;
-    if ((direction == Direction.down && controls.direction != Direction.up) ||
+    if (controls != null &&
+            (direction == Direction.down &&
+                controls.direction != Direction.up) ||
         (direction == Direction.up && controls.direction != Direction.down) ||
         (direction == Direction.rigth &&
             controls.direction != Direction.left) ||
