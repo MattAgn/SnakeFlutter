@@ -83,18 +83,18 @@ class BoardPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    wallsCoordinates?.forEach((wallCoordinates) {
+      _drawRectangle(canvas, wallCoordinates, Colors.orange);
+    });
+    portalsCoordinates?.forEach((portalCoordinates) {
+      _drawRectangle(canvas, portalCoordinates, Colors.blue);
+    });
     if (appleCoordinates != null) {
       _drawApple(canvas, appleCoordinates);
     }
     if (snakeCoordinates != null) {
       _drawRectangle(canvas, snakeCoordinates, Colors.green);
     }
-    wallsCoordinates?.forEach((wallCoordinates) {
-      this._drawRectangle(canvas, wallCoordinates, Colors.orange);
-    });
-    portalsCoordinates?.forEach((portalCoordinates) {
-      this._drawRectangle(canvas, portalCoordinates, Colors.blue);
-    });
     snakeBody?.forEach((bodyPart) {
       _drawRectangle(canvas, bodyPart, Colors.green);
     });
@@ -103,11 +103,11 @@ class BoardPainter extends CustomPainter {
   _drawRectangle(Canvas canvas, Coordinates coordinates, Color color) {
     canvas.drawRect(
         Rect.fromCenter(
-          width: this.boardSquareSize,
-          height: this.boardSquareSize,
+          width: boardSquareSize,
+          height: boardSquareSize,
           center: Offset(
-            (coordinates.x.toDouble() + 0.5) * this.boardSquareSize,
-            (coordinates.y.toDouble() + 0.5) * this.boardSquareSize,
+            (coordinates.x.toDouble() + 0.5) * boardSquareSize,
+            (coordinates.y.toDouble() + 0.5) * boardSquareSize,
           ),
         ),
         Paint()
