@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:provider/provider.dart';
@@ -15,9 +16,12 @@ class GameBoard extends StatelessWidget {
     if (gameSystem.gameStatus == GameStatus.gameOver) {
       Future.delayed(Duration.zero, () => _gameOver(context));
     }
+    final minimumHeight = kIsWeb
+        ? MediaQuery.of(context).size.height * 0.8
+        : MediaQuery.of(context).size.height * 0.5;
 
-    final boardPixelSize = min(MediaQuery.of(context).size.height * 0.5,
-        MediaQuery.of(context).size.width);
+    final boardPixelSize =
+        min(minimumHeight, MediaQuery.of(context).size.width);
 
     return Container(
       color: Colors.black,
