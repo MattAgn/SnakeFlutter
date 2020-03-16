@@ -69,9 +69,7 @@ class InitSystem extends System {
   static getRandomCoordinates(List<Entity> entities) {
     final List<Coordinates> unavailablePositions = entities
         .where((entity) => entity is LeadPositionComponent)
-        .map((entity) => entity
-            as LeadPositionComponent) // TODO: trouver comment mieux typer
-        .map((entity) => entity.leadPosition)
+        .map((entity) => (entity as LeadPositionComponent).leadPosition)
         .toList();
     return _getAvailableCoordinates(unavailablePositions);
   }
