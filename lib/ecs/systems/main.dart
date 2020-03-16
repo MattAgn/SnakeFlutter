@@ -115,10 +115,10 @@ class GameSystem extends System {
             (direction == Direction.down &&
                 controls.direction != Direction.up) ||
         (direction == Direction.up && controls.direction != Direction.down) ||
-        (direction == Direction.rigth &&
+        (direction == Direction.right &&
             controls.direction != Direction.left) ||
         (direction == Direction.left &&
-            controls.direction != Direction.rigth)) {
+            controls.direction != Direction.right)) {
       controls.direction = direction;
     }
     controlSystem.handleEntities(entities);
