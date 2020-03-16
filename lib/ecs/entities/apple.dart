@@ -1,8 +1,10 @@
 import 'package:snake_game/ecs/components/eatable.dart';
 import 'package:snake_game/ecs/components/position.dart';
+import 'package:snake_game/ecs/components/spawnable.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 
-class AppleEntity extends Entity with LeadPositionComponent, EatableComponent {
+class AppleEntity extends Entity
+    with LeadPositionComponent, EatableComponent, SpanwableComponent {
   AppleEntity(Coordinates initialApplePosition) {
     this.leadPosition = initialApplePosition;
   }

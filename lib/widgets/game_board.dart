@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/components/position.dart';
+import 'package:snake_game/ecs/systems/init.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 
 class GameBoard extends StatelessWidget {
@@ -14,9 +16,12 @@ class GameBoard extends StatelessWidget {
     if (gameSystem.gameStatus == GameStatus.gameOver) {
       Future.delayed(Duration.zero, () => _gameOver(context));
     }
+    final minimumHeight = kIsWeb
+        ? MediaQuery.of(context).size.height * 0.8
+        : MediaQuery.of(context).size.height * 0.5;
 
-    final boardPixelSize = min(MediaQuery.of(context).size.height * 0.5,
-        MediaQuery.of(context).size.width);
+    final boardPixelSize =
+        min(minimumHeight, MediaQuery.of(context).size.width);
 
     return Container(
       color: Colors.black,
@@ -122,10 +127,10 @@ class BoardPainter extends CustomPainter {
 
     const APPLE_VIEWBOX_SIZE = 503.894;
     final scaleMatrix = Matrix4.identity()
-      ..scale(boardSquareSize / APPLE_VIEWBOX_SIZE * 2,
-          boardSquareSize / APPLE_VIEWBOX_SIZE * 2)
+      ..scale(boardSquareSize / APPLE_VIEWBOX_SIZE * 1.5,
+          boardSquareSize / APPLE_VIEWBOX_SIZE * 1.5)
       ..setTranslationRaw(
-        (coordinates.x + 0.5) * boardSquareSize,
+        (coordinates.x - 0.5) * boardSquareSize,
         (coordinates.y - 0.5) * boardSquareSize,
         0,
       );

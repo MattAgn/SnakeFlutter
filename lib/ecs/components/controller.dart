@@ -1,5 +1,5 @@
 mixin ControllerComponent {
-  Direction direction = Direction.rigth;
+  Direction direction = Direction.right;
 }
 
-enum Direction { up, down, rigth, left }
+enum Direction { up, down, right, left }

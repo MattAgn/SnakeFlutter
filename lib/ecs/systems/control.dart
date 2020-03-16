@@ -23,7 +23,7 @@ class ControlSystem extends System {
 
   Speed _updateSpeedFromDirection(Direction direction) {
     switch (direction) {
-      case Direction.rigth:
+      case Direction.right:
         return Speed(dx: 1, dy: 0);
       case Direction.left:
         return Speed(dx: -1, dy: 0);

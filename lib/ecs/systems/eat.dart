@@ -1,8 +1,10 @@
 import 'package:snake_game/ecs/components/eatable.dart';
 import 'package:snake_game/ecs/components/eater.dart';
 import 'package:snake_game/ecs/components/position.dart';
+import 'package:snake_game/ecs/components/spawnable.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
+import 'package:snake_game/ecs/systems/init.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class EatSystem extends System {
@@ -14,7 +16,10 @@ class EatSystem extends System {
         LeadPositionComponent, SnakeEntity>(entities);
     eaterEntities.forEach((eater) {
       eatableEntities.forEach((eatable) {
-        eater.hasEaten = eatable.leadPosition.equal(eater.leadPosition);
+        eater.hasEaten = eater.leadPosition.equal(eatable.leadPosition);
+        if (eater.hasEaten && eatable is SpanwableComponent) {
+          eatable.leadPosition = InitSystem.getRandomCoordinates(entities);
+        }
       });
     });
   }

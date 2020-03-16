@@ -4,8 +4,8 @@ import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 import 'package:snake_game/widgets/control_button.dart';
 
-class Controls extends StatelessWidget {
-  const Controls({
+class ArrowControls extends StatelessWidget {
+  const ArrowControls({
     Key key,
   }) : super(key: key);
 
@@ -78,7 +78,7 @@ class Controls extends StatelessWidget {
                     child: ControlButton(
                       child: Icon(Icons.arrow_forward),
                       onPress: () {
-                        gameSystem.direction = Direction.rigth;
+                        gameSystem.direction = Direction.right;
                       },
                     ),
                   ),
