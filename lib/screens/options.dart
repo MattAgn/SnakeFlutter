@@ -49,7 +49,7 @@ class _OptionsState extends State<Options> {
               SizedBox(height: 60),
               Column(
                 children: <Widget>[
-                  Text("Number of walls: ${nbWalls}"),
+                  Text("Number of random walls: $nbWalls"),
                   SizedBox(height: 5),
                   Slider(
                     value: nbWalls.toDouble(),
@@ -64,7 +64,7 @@ class _OptionsState extends State<Options> {
               SizedBox(height: 60),
               Column(
                 children: <Widget>[
-                  Text("Number of portals: ${nbPortals}"),
+                  Text("Number of random portals: $nbPortals"),
                   SizedBox(height: 5),
                   Slider(
                     value: nbPortals.toDouble(),
