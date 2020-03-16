@@ -86,10 +86,10 @@ class BoardPainter extends CustomPainter {
       _drawRectangle(canvas, snakeCoordinates, Colors.green);
     }
     wallsCoordinates?.forEach((wallCoordinates) {
-      this.drawRectangle(canvas, wallCoordinates, Colors.orange);
+      this._drawRectangle(canvas, wallCoordinates, Colors.orange);
     });
     portalsCoordinates?.forEach((portalCoordinates) {
-      this.drawRectangle(canvas, portalCoordinates, Colors.blue);
+      this._drawRectangle(canvas, portalCoordinates, Colors.blue);
     });
     snakeBody?.forEach((bodyPart) {
       _drawRectangle(canvas, bodyPart, Colors.green);
@@ -123,10 +123,10 @@ class BoardPainter extends CustomPainter {
 
     const APPLE_VIEWBOX_SIZE = 503.894;
     final scaleMatrix = Matrix4.identity()
-      ..scale(boardSquareSize / APPLE_VIEWBOX_SIZE * 2,
-          boardSquareSize / APPLE_VIEWBOX_SIZE * 2)
+      ..scale(boardSquareSize / APPLE_VIEWBOX_SIZE * 1.5,
+          boardSquareSize / APPLE_VIEWBOX_SIZE * 1.5)
       ..setTranslationRaw(
-        (coordinates.x + 0.5) * boardSquareSize,
+        (coordinates.x - 0.5) * boardSquareSize,
         (coordinates.y - 0.5) * boardSquareSize,
         0,
       );
