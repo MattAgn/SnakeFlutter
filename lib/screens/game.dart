@@ -30,6 +30,14 @@ class Game extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text("Game"),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/options");
+            },
+            icon: Icon(Icons.settings),
+          )
+        ],
       ),
       body: SafeArea(
         child: ChangeNotifierProvider<GameSystem>(
