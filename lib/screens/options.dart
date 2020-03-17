@@ -29,11 +29,13 @@ class Options extends StatelessWidget {
                   SizedBox(height: 5),
                   ToggleButtons(
                     children: <Widget>[
-                      ToggleButton(title: "walls"),
                       ToggleButton(title: "portals"),
+                      ToggleButton(title: "walls"),
                     ],
-                    isSelected: [true, false],
-                    onPressed: (int s) {},
+                    isSelected: gameSystem
+                        .optionsSystem.surroundingBoardEntityTypesSelected,
+                    onPressed:
+                        gameSystem.optionsSystem.selectSurroundingEntityType,
                   ),
                 ],
               ),

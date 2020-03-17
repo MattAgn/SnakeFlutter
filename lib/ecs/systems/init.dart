@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:snake_game/ecs/components/body.dart';
 import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/components/position.dart';
@@ -19,13 +20,16 @@ class InitSystem extends System {
   static final initialApplePosition = Coordinates(x: 10, y: 2);
   List<Entity> entities = [];
 
-  initEntities({int nbRandomWalls = 0, int nbRandomPortals = 0}) {
+  initEntities(
+      {int nbRandomWalls = 0,
+      int nbRandomPortals = 0,
+      Type surroundingBoardEntityType}) {
     print("init entities");
     final controls = ControlsEntity();
     this.entities = [];
-    _initBoardSurroundingPortals();
     _initSnake();
     _initApple();
+    _initBoardSurroundings(surroundingBoardEntityType);
     _initRandomPortals(nbRandomPortals);
     _initRandomWalls(nbRandomWalls);
     return [controls, ...this.entities];
@@ -37,6 +41,16 @@ class InitSystem extends System {
 
   void _initSnake() {
     this.entities.add(SnakeEntity(initialSnakePosition, initialSnakeSpeed));
+  }
+
+  void _initBoardSurroundings(Type surroundingBoardEntityType) {
+    if (surroundingBoardEntityType == PortalEntity) {
+      _initBoardSurroundingPortals();
+    } else if (surroundingBoardEntityType == WallEntity) {
+      _initBoardSurroundingWalls();
+    } else {
+      throw ErrorDescription("INVALID SURROUNDING ENTITY");
+    }
   }
 
   void _initBoardSurroundingPortals() {

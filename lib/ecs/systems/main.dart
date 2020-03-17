@@ -34,7 +34,7 @@ class GameSystem extends System {
     this.eatSystem = EatSystem();
     this.deathSystem = DeathSystem();
     this.initSystem = InitSystem();
-    this.optionsSystem = OptionsSystem();
+    this.optionsSystem = OptionsSystem(notifyListener: notifyListeners);
     this.gameStatus = GameStatus.stop;
   }
 
@@ -42,6 +42,7 @@ class GameSystem extends System {
     return this.initSystem.initEntities(
           nbRandomPortals: this.optionsSystem.nbRandomPortals,
           nbRandomWalls: this.optionsSystem.nbRandomWalls,
+          surroundingBoardEntityType: optionsSystem.surroundingBoardEntityType,
         );
   }
 
