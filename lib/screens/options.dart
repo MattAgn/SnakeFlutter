@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/systems/main.dart';
+import 'package:snake_game/ecs/systems/options.dart';
 import 'package:snake_game/widgets/toggle_button.dart';
 
 class Options extends StatelessWidget {
-  final List<bool> isSelected = [false, true];
-  final int nbWalls = 0;
-  final int nbPortals = 0;
-
   @override
   Widget build(BuildContext context) {
-    final gameSystem = Provider.of<GameSystem>(context, listen: true);
+    final OptionsSystem optionsSystem =
+        Provider.of<GameSystem>(context, listen: true).optionsSystem;
 
     return Scaffold(
       appBar: AppBar(
@@ -32,10 +30,9 @@ class Options extends StatelessWidget {
                       ToggleButton(title: "portals"),
                       ToggleButton(title: "walls"),
                     ],
-                    isSelected: gameSystem
-                        .optionsSystem.surroundingBoardEntityTypesSelected,
-                    onPressed:
-                        gameSystem.optionsSystem.selectSurroundingEntityType,
+                    isSelected:
+                        optionsSystem.surroundingBoardEntityTypesSelected,
+                    onPressed: optionsSystem.selectSurroundingEntityType,
                   ),
                 ],
               ),
@@ -43,14 +40,14 @@ class Options extends StatelessWidget {
               Column(
                 children: <Widget>[
                   Text(
-                      "Number of random walls: ${gameSystem.optionsSystem.nbRandomWalls}"),
+                      "Number of random walls: ${optionsSystem.nbRandomWalls}"),
                   SizedBox(height: 5),
                   Slider(
-                    value: gameSystem.optionsSystem.nbRandomWalls.toDouble(),
+                    value: optionsSystem.nbRandomWalls.toDouble(),
                     max: 20,
                     min: 0,
                     onChanged: (value) =>
-                        gameSystem.nbRandomWalls = value.toInt(),
+                        optionsSystem.nbRandomWalls = value.toInt(),
                   ),
                 ],
               ),
@@ -58,14 +55,14 @@ class Options extends StatelessWidget {
               Column(
                 children: <Widget>[
                   Text(
-                      "Number of random portals: ${gameSystem.optionsSystem.nbRandomPortals}"),
+                      "Number of random portals: ${optionsSystem.nbRandomPortals}"),
                   SizedBox(height: 5),
                   Slider(
-                    value: gameSystem.optionsSystem.nbRandomPortals.toDouble(),
+                    value: optionsSystem.nbRandomPortals.toDouble(),
                     max: 20,
                     min: 0,
                     onChanged: (value) =>
-                        gameSystem.nbRandomPortals = value.toInt(),
+                        optionsSystem.nbRandomPortals = value.toInt(),
                   ),
                 ],
               ),

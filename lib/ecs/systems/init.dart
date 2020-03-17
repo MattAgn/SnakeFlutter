@@ -27,6 +27,9 @@ class InitSystem extends System {
     print("init entities");
     final controls = ControlsEntity();
     this.entities = [];
+    // order is important below because random coordinates
+    // are generated based on the previous coordinates
+    // while snake, apple and boardSurroundings have fixed coordinates
     _initSnake();
     _initApple();
     _initBoardSurroundings(surroundingBoardEntityType);

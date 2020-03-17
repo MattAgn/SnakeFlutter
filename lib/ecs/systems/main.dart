@@ -34,7 +34,7 @@ class GameSystem extends System {
     this.eatSystem = EatSystem();
     this.deathSystem = DeathSystem();
     this.initSystem = InitSystem();
-    this.optionsSystem = OptionsSystem(notifyListener: notifyListeners);
+    this.optionsSystem = OptionsSystem(notifyGameListeners: notifyListeners);
     this.gameStatus = GameStatus.stop;
   }
 
@@ -133,16 +133,6 @@ class GameSystem extends System {
       controls.direction = direction;
     }
     controlSystem.handleEntities(entities);
-    notifyListeners();
-  }
-
-  set nbRandomWalls(int nbRandomWalls) {
-    this.optionsSystem.nbRandomWalls = nbRandomWalls;
-    notifyListeners();
-  }
-
-  set nbRandomPortals(int nbRandomPortals) {
-    this.optionsSystem.nbRandomPortals = nbRandomPortals;
     notifyListeners();
   }
 }

@@ -3,14 +3,14 @@ import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class OptionsSystem extends System {
-  int nbRandomWalls = 0;
-  int nbRandomPortals = 0;
-  Function notifyListener;
+  int _nbRandomWalls = 0;
+  int _nbRandomPortals = 0;
+  Function notifyGameListeners;
 
   /// default = [portalEntity:true, wallEntity: false]
   List<bool> surroundingBoardEntityTypesSelected = [true, false];
 
-  OptionsSystem({this.notifyListener});
+  OptionsSystem({this.notifyGameListeners});
 
   selectSurroundingEntityType(int index) {
     for (int buttonIndex = 0;
@@ -22,9 +22,23 @@ class OptionsSystem extends System {
         surroundingBoardEntityTypesSelected[buttonIndex] = false;
       }
     }
-    this.notifyListener();
+    this.notifyGameListeners();
   }
 
   get surroundingBoardEntityType =>
       surroundingBoardEntityTypesSelected[0] ? PortalEntity : WallEntity;
+
+  set nbRandomWalls(int nbRandomWalls) {
+    _nbRandomWalls = nbRandomWalls;
+    notifyGameListeners();
+  }
+
+  set nbRandomPortals(int nbRandomPortals) {
+    _nbRandomPortals = nbRandomPortals;
+    notifyGameListeners();
+  }
+
+  get nbRandomWalls => _nbRandomWalls;
+
+  get nbRandomPortals => _nbRandomPortals;
 }
