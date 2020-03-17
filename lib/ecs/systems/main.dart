@@ -38,14 +38,18 @@ class GameSystem extends System {
     this.gameStatus = GameStatus.stop;
   }
 
+  initEntities() {
+    return this.initSystem.initEntities(
+          nbRandomPortals: this.optionsSystem.nbRandomPortals,
+          nbRandomWalls: this.optionsSystem.nbRandomWalls,
+        );
+  }
+
   play() {
     print("play");
     this.gameStatus = GameStatus.play;
     if (this.entities == null) {
-      this.entities = this.initSystem.initEntities(
-            nbRandomPortals: this.optionsSystem.nbRandomPortals,
-            nbRandomWalls: this.optionsSystem.nbRandomWalls,
-          );
+      this.entities = this.initEntities();
     }
     this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
       controlSystem.handleEntities(entities);
@@ -58,7 +62,7 @@ class GameSystem extends System {
   }
 
   replay() {
-    this.entities = this.initSystem.initEntities();
+    this.entities = this.initEntities();
     play();
   }
 
@@ -72,7 +76,7 @@ class GameSystem extends System {
     print("stop");
     this.gameStatus = GameStatus.stop;
     this.timer?.cancel();
-    this.entities = this.initSystem.initEntities();
+    this.entities = this.initEntities();
     notifyListeners();
   }
 
