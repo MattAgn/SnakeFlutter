@@ -89,36 +89,6 @@ class GameSystem extends System {
     notifyListeners();
   }
 
-  SnakeEntity get snake {
-    final snake = this.entities?.firstWhere((entity) => entity is SnakeEntity)
-        as SnakeEntity;
-    return snake;
-  }
-
-  AppleEntity get apple {
-    final apple = this.entities?.firstWhere((entity) => entity is AppleEntity)
-        as AppleEntity;
-    return apple;
-  }
-
-  List<WallEntity> get walls {
-    final walls = this
-        .entities
-        ?.where((entity) => entity is WallEntity)
-        ?.map((entity) => entity as WallEntity)
-        ?.toList();
-    return walls;
-  }
-
-  List<PortalEntity> get portals {
-    final portals = this
-        .entities
-        ?.where((entity) => entity is PortalEntity)
-        ?.map((entity) => entity as PortalEntity)
-        ?.toList();
-    return portals;
-  }
-
   List<Entity> get renderableEntities {
     final renderableEntities = this
         .entities
