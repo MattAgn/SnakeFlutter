@@ -17,42 +17,29 @@ class InitSystem extends System {
   static final initialSnakePosition = Coordinates(x: 2, y: 2);
   static final initialSnakeSpeed = Speed(dx: 1, dy: 0);
   static final initialApplePosition = Coordinates(x: 10, y: 2);
-  List<Entity> entities;
+  List<Entity> entities = [];
 
   initEntities() {
     print("init entities");
     final controls = ControlsEntity();
-    return [
-      controls,
-      _initSnake(),
-      _initApple(),
-      ..._initWalls(),
-      ..._initPortals()
-    ];
+    this.entities = [];
+    _initBoardSurroundingPortals();
+    _initSnake();
+    _initApple();
+    _initRandomPortals(3);
+    _initRandomWalls(3);
+    return [controls, ...this.entities];
   }
 
-  AppleEntity _initApple() {
-    return AppleEntity(initialApplePosition);
+  void _initApple() {
+    this.entities.add(AppleEntity(initialApplePosition));
   }
 
-  SnakeEntity _initSnake() {
-    return SnakeEntity(initialSnakePosition, initialSnakeSpeed);
+  void _initSnake() {
+    this.entities.add(SnakeEntity(initialSnakePosition, initialSnakeSpeed));
   }
 
-  List<WallEntity> _initWalls() {
-    return [
-      WallEntity(Coordinates(x: 10, y: 10)),
-      WallEntity(Coordinates(x: 11, y: 10)),
-      WallEntity(Coordinates(x: 12, y: 10)),
-      WallEntity(Coordinates(x: 13, y: 10)),
-      WallEntity(Coordinates(x: 14, y: 10)),
-      WallEntity(Coordinates(x: 15, y: 10)),
-      WallEntity(Coordinates(x: 16, y: 10)),
-      WallEntity(Coordinates(x: 17, y: 10)),
-    ];
-  }
-
-  List<PortalEntity> _initPortals() {
+  void _initBoardSurroundingPortals() {
     final List<PortalEntity> portals = [];
     for (var i = 0; i <= BOARD_SIZE; i++) {
       portals.add(PortalEntity(
@@ -64,10 +51,40 @@ class InitSystem extends System {
       portals.add(PortalEntity(
           Coordinates(x: i, y: 0), Coordinates(x: i, y: BOARD_SIZE - 1)));
     }
-    return portals;
+    this.entities.addAll(portals);
   }
 
-  static getRandomCoordinates(List<Entity> entities) {
+  void _initBoardSurroundingWalls() {
+    final List<WallEntity> walls = [];
+    for (var i = 0; i <= BOARD_SIZE; i++) {
+      walls.add(WallEntity(Coordinates(x: BOARD_SIZE, y: i)));
+      walls.add(WallEntity(Coordinates(x: i, y: BOARD_SIZE)));
+      walls.add(WallEntity(Coordinates(x: 0, y: i)));
+      walls.add(WallEntity(Coordinates(x: i, y: 0)));
+    }
+    this.entities.addAll(walls);
+  }
+
+  void _initRandomWalls(int nbWalls) {
+    for (var i = 0; i < nbWalls; i++) {
+      final randomCoordinates = InitSystem.getRandomCoordinates(this.entities);
+      this.entities.add(WallEntity(randomCoordinates));
+    }
+  }
+
+  void _initRandomPortals(int nbPortals) {
+    for (var i = 0; i < nbPortals; i++) {
+      final randomLeadPosition = InitSystem.getRandomCoordinates(this.entities);
+      final randomExitPosition =
+          InitSystem.getRandomCoordinates(this.entities, [randomLeadPosition]);
+      this.entities.add(PortalEntity(randomLeadPosition, randomExitPosition));
+    }
+  }
+
+  /// TODO: improve this function so that it does not use recursion to find
+  /// available random coordinates
+  static getRandomCoordinates(List<Entity> entities,
+      [List<Coordinates> unreferencedUnavailablePositions]) {
     final List<Coordinates> unavailableBodyPositions = entities
         .where((entity) => entity is BodyComponent)
         .map((entity) => (entity as BodyComponent).body)
@@ -78,7 +95,8 @@ class InitSystem extends System {
         .where((entity) => entity is LeadPositionComponent)
         .map((entity) => (entity as LeadPositionComponent).leadPosition)
         .toList()
-          ..addAll(unavailableBodyPositions);
+          ..addAll(unavailableBodyPositions)
+          ..addAll(unreferencedUnavailablePositions ?? []);
 
     return _getAvailableCoordinates(unavailablePositions.toList());
   }

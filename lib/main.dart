@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.green,
       ),
-      initialRoute: "/",
+      initialRoute: "/game",
       routes: {
         "/": (context) => Landing(),
         "/game": (context) => Game(),
