@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snake_game/widgets/toggle_button.dart';
 
 class Options extends StatefulWidget {
   @override
@@ -9,6 +10,32 @@ class _OptionsState extends State<Options> {
   List<bool> isSelected = [false, true];
   int nbWalls = 0;
   int nbPortals = 0;
+
+  onPressSurroundingBoardOptions(int index) {
+    setState(() {
+      for (int buttonIndex = 0;
+          buttonIndex < isSelected.length;
+          buttonIndex++) {
+        if (buttonIndex == index) {
+          isSelected[buttonIndex] = true;
+        } else {
+          isSelected[buttonIndex] = false;
+        }
+      }
+    });
+  }
+
+  onChangeNbRandomPortals(value) {
+    setState(() {
+      nbPortals = value.toInt();
+    });
+  }
+
+  onChangeNbRandomWalls(value) {
+    setState(() {
+      nbWalls = value.toInt();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +55,12 @@ class _OptionsState extends State<Options> {
                   Text("Surround board with"),
                   SizedBox(height: 5),
                   ToggleButtons(
-                    children: <Widget>[Text("Walls"), Text("Portals")],
+                    children: <Widget>[
+                      ToggleButton(title: "walls"),
+                      ToggleButton(title: "portals"),
+                    ],
                     isSelected: isSelected,
-                    onPressed: (int index) {
-                      setState(() {
-                        for (int buttonIndex = 0;
-                            buttonIndex < isSelected.length;
-                            buttonIndex++) {
-                          if (buttonIndex == index) {
-                            isSelected[buttonIndex] = true;
-                          } else {
-                            isSelected[buttonIndex] = false;
-                          }
-                        }
-                      });
-                    },
+                    onPressed: onPressSurroundingBoardOptions,
                   ),
                 ],
               ),
@@ -55,9 +73,7 @@ class _OptionsState extends State<Options> {
                     value: nbWalls.toDouble(),
                     max: 20,
                     min: 0,
-                    onChanged: (value) => setState(() {
-                      nbWalls = value.toInt();
-                    }),
+                    onChanged: onChangeNbRandomWalls,
                   ),
                 ],
               ),
@@ -70,9 +86,7 @@ class _OptionsState extends State<Options> {
                     value: nbPortals.toDouble(),
                     max: 20,
                     min: 0,
-                    onChanged: (value) => setState(() {
-                      nbPortals = value.toInt();
-                    }),
+                    onChanged: onChangeNbRandomPortals,
                   ),
                 ],
               ),
