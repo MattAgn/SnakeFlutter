@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:snake_game/ecs/components/controller.dart';
+import 'package:snake_game/ecs/components/renderable.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
@@ -116,6 +117,14 @@ class GameSystem extends System {
         ?.map((entity) => entity as PortalEntity)
         ?.toList();
     return portals;
+  }
+
+  List<Entity> get renderableEntities {
+    final renderableEntities = this
+        .entities
+        ?.where((entity) => entity is RenderableComponent)
+        ?.toList();
+    return renderableEntities ?? [];
   }
 
   set direction(Direction direction) {
