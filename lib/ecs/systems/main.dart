@@ -12,6 +12,7 @@ import 'package:snake_game/ecs/systems/death.dart';
 import 'package:snake_game/ecs/systems/eat.dart';
 import 'package:snake_game/ecs/systems/init.dart';
 import 'package:snake_game/ecs/systems/move.dart';
+import 'package:snake_game/ecs/systems/options.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 enum GameStatus { play, pause, stop, gameOver }
@@ -23,6 +24,7 @@ class GameSystem extends System {
   EatSystem eatSystem;
   DeathSystem deathSystem;
   InitSystem initSystem;
+  OptionsSystem optionsSystem;
   Timer timer;
   GameStatus gameStatus;
 
@@ -32,14 +34,23 @@ class GameSystem extends System {
     this.eatSystem = EatSystem();
     this.deathSystem = DeathSystem();
     this.initSystem = InitSystem();
+    this.optionsSystem = OptionsSystem(notifyGameListeners: notifyListeners);
     this.gameStatus = GameStatus.stop;
+  }
+
+  initEntities() {
+    return this.initSystem.initEntities(
+          nbRandomPortals: this.optionsSystem.nbRandomPortals,
+          nbRandomWalls: this.optionsSystem.nbRandomWalls,
+          surroundingBoardEntityType: optionsSystem.surroundingBoardEntityType,
+        );
   }
 
   play() {
     print("play");
     this.gameStatus = GameStatus.play;
     if (this.entities == null) {
-      this.entities = this.initSystem.initEntities();
+      this.entities = this.initEntities();
     }
     this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
       controlSystem.handleEntities(entities);
@@ -52,7 +63,7 @@ class GameSystem extends System {
   }
 
   replay() {
-    this.entities = this.initSystem.initEntities();
+    this.entities = this.initEntities();
     play();
   }
 
@@ -66,7 +77,7 @@ class GameSystem extends System {
     print("stop");
     this.gameStatus = GameStatus.stop;
     this.timer?.cancel();
-    this.entities = this.initSystem.initEntities();
+    this.entities = this.initEntities();
     notifyListeners();
   }
 

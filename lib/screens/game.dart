@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:snake_game/ecs/systems/main.dart';
 import 'package:snake_game/widgets/arrow_controls.dart';
 import 'package:snake_game/widgets/game_board.dart';
 import 'package:snake_game/widgets/keyboard_controls.dart';
@@ -30,11 +28,17 @@ class Game extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text("Game"),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, "/options");
+            },
+            icon: Icon(Icons.settings),
+          )
+        ],
       ),
       body: SafeArea(
-        child: ChangeNotifierProvider<GameSystem>(
-            create: (context) => GameSystem(),
-            child: kIsWeb ? _renderWebGame() : _renderMobileGame()),
+        child: kIsWeb ? _renderWebGame() : _renderMobileGame(),
       ),
     );
   }
