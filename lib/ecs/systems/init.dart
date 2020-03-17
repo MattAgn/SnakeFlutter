@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:snake_game/ecs/components/body.dart';
 import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
@@ -67,11 +68,19 @@ class InitSystem extends System {
   }
 
   static getRandomCoordinates(List<Entity> entities) {
+    final List<Coordinates> unavailableBodyPositions = entities
+        .where((entity) => entity is BodyComponent)
+        .map((entity) => (entity as BodyComponent).body)
+        .expand((body) => body)
+        .toList();
+
     final List<Coordinates> unavailablePositions = entities
         .where((entity) => entity is LeadPositionComponent)
         .map((entity) => (entity as LeadPositionComponent).leadPosition)
-        .toList();
-    return _getAvailableCoordinates(unavailablePositions);
+        .toList()
+          ..addAll(unavailableBodyPositions);
+
+    return _getAvailableCoordinates(unavailablePositions.toList());
   }
 
   static Coordinates _getAvailableCoordinates(
