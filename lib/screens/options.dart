@@ -1,44 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:snake_game/ecs/systems/main.dart';
 import 'package:snake_game/widgets/toggle_button.dart';
 
-class Options extends StatefulWidget {
-  @override
-  _OptionsState createState() => _OptionsState();
-}
-
-class _OptionsState extends State<Options> {
-  List<bool> isSelected = [false, true];
-  int nbWalls = 0;
-  int nbPortals = 0;
-
-  onPressSurroundingBoardOptions(int index) {
-    setState(() {
-      for (int buttonIndex = 0;
-          buttonIndex < isSelected.length;
-          buttonIndex++) {
-        if (buttonIndex == index) {
-          isSelected[buttonIndex] = true;
-        } else {
-          isSelected[buttonIndex] = false;
-        }
-      }
-    });
-  }
-
-  onChangeNbRandomPortals(value) {
-    setState(() {
-      nbPortals = value.toInt();
-    });
-  }
-
-  onChangeNbRandomWalls(value) {
-    setState(() {
-      nbWalls = value.toInt();
-    });
-  }
+class Options extends StatelessWidget {
+  final List<bool> isSelected = [false, true];
+  final int nbWalls = 0;
+  final int nbPortals = 0;
 
   @override
   Widget build(BuildContext context) {
+    final gameSystem = Provider.of<GameSystem>(context, listen: true);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Options"),
@@ -59,34 +32,38 @@ class _OptionsState extends State<Options> {
                       ToggleButton(title: "walls"),
                       ToggleButton(title: "portals"),
                     ],
-                    isSelected: isSelected,
-                    onPressed: onPressSurroundingBoardOptions,
+                    isSelected: [true, false],
+                    onPressed: (int s) {},
                   ),
                 ],
               ),
               SizedBox(height: 60),
               Column(
                 children: <Widget>[
-                  Text("Number of random walls: $nbWalls"),
+                  Text(
+                      "Number of random walls: ${gameSystem.optionsSystem.nbRandomWalls}"),
                   SizedBox(height: 5),
                   Slider(
-                    value: nbWalls.toDouble(),
+                    value: gameSystem.optionsSystem.nbRandomWalls.toDouble(),
                     max: 20,
                     min: 0,
-                    onChanged: onChangeNbRandomWalls,
+                    onChanged: (value) =>
+                        gameSystem.nbRandomWalls = value.toInt(),
                   ),
                 ],
               ),
               SizedBox(height: 60),
               Column(
                 children: <Widget>[
-                  Text("Number of random portals: $nbPortals"),
+                  Text(
+                      "Number of random portals: ${gameSystem.optionsSystem.nbRandomPortals}"),
                   SizedBox(height: 5),
                   Slider(
-                    value: nbPortals.toDouble(),
+                    value: gameSystem.optionsSystem.nbRandomPortals.toDouble(),
                     max: 20,
                     min: 0,
-                    onChanged: onChangeNbRandomPortals,
+                    onChanged: (value) =>
+                        gameSystem.nbRandomPortals = value.toInt(),
                   ),
                 ],
               ),

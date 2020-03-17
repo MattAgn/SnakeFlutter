@@ -19,15 +19,15 @@ class InitSystem extends System {
   static final initialApplePosition = Coordinates(x: 10, y: 2);
   List<Entity> entities = [];
 
-  initEntities() {
+  initEntities({int nbRandomWalls = 0, int nbRandomPortals = 0}) {
     print("init entities");
     final controls = ControlsEntity();
     this.entities = [];
     _initBoardSurroundingPortals();
     _initSnake();
     _initApple();
-    _initRandomPortals(3);
-    _initRandomWalls(3);
+    _initRandomPortals(nbRandomPortals);
+    _initRandomWalls(nbRandomWalls);
     return [controls, ...this.entities];
   }
 
