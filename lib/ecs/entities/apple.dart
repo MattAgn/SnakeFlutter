@@ -26,16 +26,16 @@ class AppleEntity extends Entity
         );
 
       final leaf = Path()
-        ..addPath(parseSvgPathData(_svgPath['leaf']), Offset(0, 0),
+        ..addPath(parseSvgPathData(_svgPaths['leaf']), Offset(0, 0),
             matrix4: scaleMatrix.storage);
       final tail = Path()
-        ..addPath(parseSvgPathData(_svgPath['tail']), Offset(0, 0),
+        ..addPath(parseSvgPathData(_svgPaths['tail']), Offset(0, 0),
             matrix4: scaleMatrix.storage);
       final body = Path()
-        ..addPath(parseSvgPathData(_svgPath['body']), Offset(0, 0),
+        ..addPath(parseSvgPathData(_svgPaths['body']), Offset(0, 0),
             matrix4: scaleMatrix.storage);
       final shadow = Path()
-        ..addPath(parseSvgPathData(_svgPath['shadow']), Offset(0, 0),
+        ..addPath(parseSvgPathData(_svgPaths['shadow']), Offset(0, 0),
             matrix4: scaleMatrix.storage);
 
       canvas.drawPath(leaf, Paint()..color = Color(0xFF7FB241));
@@ -49,7 +49,7 @@ class AppleEntity extends Entity
     };
   }
 
-  static const _svgPath = {
+  static const _svgPaths = {
     'leaf':
         'M253.483,120.441c-72.72,6.416-126.336-47.216-119.936-119.92 C206.267-5.895,259.883,47.737,253.483,120.441z',
     'tail':

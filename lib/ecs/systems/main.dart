@@ -2,12 +2,8 @@ import 'dart:async';
 
 import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/components/renderable.dart';
-import 'package:snake_game/ecs/entities/apple.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
-import 'package:snake_game/ecs/entities/portal.dart';
-import 'package:snake_game/ecs/entities/snake.dart';
-import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/control.dart';
 import 'package:snake_game/ecs/systems/death.dart';
 import 'package:snake_game/ecs/systems/eat.dart';
