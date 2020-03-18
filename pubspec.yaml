@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   provider: 4.0.4
   path_drawing: ^0.4.1
+  firebase_auth: ^0.15.5
   
 dev_dependencies:
   flutter_test:
