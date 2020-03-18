@@ -113,6 +113,8 @@ class GameSystem extends System {
     return walls;
   }
 
+  int get score => this.snake?.body?.length ?? 0;
+
   List<PortalEntity> get portals {
     final portals = this
         .entities

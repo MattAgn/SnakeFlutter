@@ -13,6 +13,11 @@ class LifecycleButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ...lifeCycleButtons,
+          SizedBox(width: 20),
+          Text(
+            "Score: ${gameSystem.score}",
+            style: TextStyle(fontSize: 20),
+          ),
         ],
       ),
     );
