@@ -88,6 +88,10 @@ class GameSystem extends System {
     notifyListeners();
   }
 
+  playOrPause() {
+    gameStatus == GameStatus.play ? pause() : play();
+  }
+
   SnakeEntity get snake {
     final snake = this.entities?.firstWhere((entity) => entity is SnakeEntity)
         as SnakeEntity;
