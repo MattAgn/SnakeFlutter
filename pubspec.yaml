@@ -26,6 +26,9 @@ dependencies:
   provider: 4.0.4
   path_drawing: ^0.4.1
   firebase_auth: ^0.15.5
+  google_sign_in: ^4.1.4
+
+
   
 dev_dependencies:
   flutter_test:

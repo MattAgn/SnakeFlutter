@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 import 'package:snake_game/screens/game.dart';
 import 'package:snake_game/screens/landing.dart';
+import 'package:snake_game/screens/login.dart';
 import 'package:snake_game/screens/options.dart';
 
 void main() => runApp(MyApp());
@@ -17,11 +18,12 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.green,
         ),
-        initialRoute: "/",
+        initialRoute: "/login",
         routes: {
           "/": (context) => Landing(),
           "/game": (context) => Game(),
           "/options": (context) => Options(),
+          "/login": (context) => Login(),
         },
       ),
     );
