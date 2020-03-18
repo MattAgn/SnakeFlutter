@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:snake_game/ecs/systems/main.dart';
 import 'package:snake_game/widgets/arrow_controls.dart';
 import 'package:snake_game/widgets/game_board.dart';
 import 'package:snake_game/widgets/keyboard_controls.dart';
@@ -24,6 +26,7 @@ class Game extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameSystem = Provider.of<GameSystem>(context);
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
@@ -32,6 +35,7 @@ class Game extends StatelessWidget {
           IconButton(
             onPressed: () {
               Navigator.pushNamed(context, "/options");
+              gameSystem.pause();
             },
             icon: Icon(Icons.settings),
           )
