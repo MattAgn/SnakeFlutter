@@ -27,6 +27,7 @@ dependencies:
   path_drawing: ^0.4.1
   firebase_auth: ^0.15.5
   google_sign_in: ^4.1.4
+  email_validator: ^1.0.0
 
 
   

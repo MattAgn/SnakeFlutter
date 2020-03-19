@@ -1,49 +1,129 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/services.dart';
 
-class Login extends StatelessWidget {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  String _email;
+  String _password;
+  String _firebaseError;
+  bool _isSignupLoading = false;
+  bool _isLoginLoading = false;
 
-  Future<FirebaseUser> _handleSignIn() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-
-    final FirebaseUser user =
-        (await _auth.signInWithCredential(credential)).user;
-    print("signed in " + user.displayName);
-    return user;
+  _onSubmitSignup() async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      setState(() {
+        _isSignupLoading = true;
+      });
+      try {
+        final AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+        final FirebaseUser user = result.user;
+        showDialog(
+            context: context,
+            child: AlertDialog(
+              title: Text("Congrats!"),
+              content: Text("You successfully signed up :)"),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _formKey.currentState.reset();
+                  },
+                  child: Text("I'm so happy!"),
+                )
+              ],
+            ));
+        return user;
+      } catch (err) {
+        if (err is PlatformException) {
+          _firebaseError = err.message;
+          _formKey.currentState.validate();
+        }
+        print(err);
+      } finally {
+        setState(() {
+          _isSignupLoading = false;
+        });
+      }
+    }
   }
 
-  _onSignInWithGoogle() {
-    _handleSignIn()
-        .then((FirebaseUser user) => print(user))
-        .catchError((e) => print(e));
+  _onSubmitLogin() async {
+    _formKey.currentState.save();
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoginLoading = true;
+      });
+      try {
+        final AuthResult result = await _auth.signInWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+        final FirebaseUser user = result.user;
+        showDialog(
+            context: context,
+            child: AlertDialog(
+              title: Text("Congrats!"),
+              content: Text("You successfully logged in :)"),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _formKey.currentState.reset();
+                  },
+                  child: Text("I'm so happy!"),
+                )
+              ],
+            ));
+        return user;
+      } catch (err) {
+        if (err is PlatformException) {
+          _firebaseError = err.message;
+          _formKey.currentState.validate();
+        }
+        print(err);
+      } finally {
+        setState(() {
+          _isLoginLoading = false;
+        });
+      }
+    }
   }
 
-  Future<FirebaseUser> _onSignInWithEmail() async {
-    print('wesh');
-    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-      email: 'mat.alingrin+android@gmail.com',
-      password: 'papapa',
-    ))
-        .user;
-    print("over");
-    return user;
+  String _validateEmail(String value) {
+    try {
+      assert(EmailValidator.validate(value));
+    } catch (e) {
+      return 'The email must be a valid email address.';
+    }
+
+    if (_firebaseError != null) {
+      return " "; // we show the error message under the password field
+    }
+    return null;
   }
 
-  signup() {
-    print("toto");
-    _onSignInWithEmail()
-        .then((FirebaseUser user) => print(user))
-        .catchError((e) => print(e));
+  String _validatePassword(String value) {
+    if (value.length < 6) {
+      return 'The password must be at least 6 characters.';
+    }
+
+    if (_firebaseError != null) {
+      return _firebaseError;
+    }
+
+    return null;
   }
 
   @override
@@ -53,19 +133,79 @@ class Login extends StatelessWidget {
         title: Text("Login"),
       ),
       body: Container(
+        padding: EdgeInsets.all(30),
         color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            RaisedButton(
-              child: Text("Login with google"),
-              onPressed: _onSignInWithGoogle,
-            ),
-            RaisedButton(
-              child: Text("Signup with email"),
-              onPressed: signup,
-            )
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                onSaved: (newValue) => _email = newValue.trim(),
+                validator: _validateEmail,
+                textInputAction: TextInputAction.next,
+                autofocus: true,
+                keyboardType: TextInputType.emailAddress,
+                autovalidate: false,
+                onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                decoration: InputDecoration(
+                  errorText: _firebaseError,
+                  labelText: "Email",
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  hintText: "toto@gmail.com",
+                  icon: Icon(
+                    Icons.email,
+                  ),
+                ),
+              ),
+              TextFormField(
+                onSaved: (newValue) => _password = newValue.trim(),
+                textInputAction: TextInputAction.done,
+                obscureText: true,
+                autofocus: true,
+                autovalidate: false,
+                validator: _validatePassword,
+                decoration: InputDecoration(
+                  errorText: _firebaseError,
+                  hintText: "azerty123",
+                  labelText: "Password",
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  icon: Icon(
+                    Icons.lock,
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    color: Colors.greenAccent,
+                    child: _isSignupLoading ? Loader() : Text("Sign up"),
+                    onPressed: _onSubmitSignup,
+                  ),
+                  SizedBox(width: 30),
+                  RaisedButton(
+                    onPressed: _onSubmitLogin,
+                    child: _isLoginLoading ? Loader() : Text("Log in"),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class Loader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 20,
+      width: 20,
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
       ),
     );
   }
