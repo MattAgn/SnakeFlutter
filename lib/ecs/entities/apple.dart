@@ -11,7 +11,7 @@ class AppleEntity extends Entity
         LeadPositionComponent,
         EatableComponent,
         SpanwableComponent,
-        RenderableComponent<AppleEntity> {
+        RenderableComponent {
   AppleEntity(Coordinates initialApplePosition) {
     leadPosition = initialApplePosition;
 
@@ -44,10 +44,16 @@ class AppleEntity extends Entity
       canvas.drawPath(shadow, Paint()..color = Color(0xFFD03F3F));
     };
 
-    shouldRepaint = (AppleEntity previousApple) {
-      return !leadPosition.equal(previousApple.leadPosition);
+    shouldRepaint = (previousAppleData) {
+      return leadPosition.x != previousAppleData['x'] ||
+          leadPosition.y != previousAppleData['y'];
     };
   }
+
+  get renderData => {
+        'x': leadPosition.x,
+        'y': leadPosition.y,
+      };
 
   static const _svgPaths = {
     'leaf':

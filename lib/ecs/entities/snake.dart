@@ -20,7 +20,7 @@ class SnakeEntity extends Entity
         LeadPositionComponent,
         NotEatableComponent,
         EaterComponent,
-        RenderableComponent<SnakeEntity> {
+        RenderableComponent {
   SnakeEntity(Coordinates initialLeadPosition, Speed speed) {
     this.body = [];
     this.leadPosition = initialLeadPosition;
@@ -71,10 +71,16 @@ class SnakeEntity extends Entity
       // Drow body
     };
 
-    shouldRepaint = (SnakeEntity previousSnake) {
-      return true;
+    shouldRepaint = (previousSnakeData) {
+      return leadPosition.x != previousSnakeData['x'] ||
+          leadPosition.y != previousSnakeData['y'];
     };
   }
+
+  get renderData => {
+        'x': leadPosition.x,
+        'y': leadPosition.y,
+      };
 
   double get rotation {
     return atan2(speed.dy, speed.dx) - pi / 2;

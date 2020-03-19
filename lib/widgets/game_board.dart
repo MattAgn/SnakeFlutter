@@ -26,11 +26,13 @@ class GameBoard extends StatelessWidget {
 
     final renderableEntities = gameSystem.renderableEntities;
     final entityPainters = renderableEntities.map((entity) {
+      final entityToRender = entity as RenderableComponent;
       return CustomPaint(
         size: boardSize,
         painter: EntityPainter(
-          boardSquareSize: boardSquareSize,
           entity: entity,
+          renderData: Map<String, dynamic>.from(entityToRender.renderData),
+          boardSquareSize: boardSquareSize,
         ),
       );
     }).toList();
@@ -69,10 +71,12 @@ class GameBoard extends StatelessWidget {
 
 class EntityPainter extends CustomPainter {
   dynamic entity;
+  Map<String, dynamic> renderData;
   double boardSquareSize;
 
   EntityPainter({
     this.entity,
+    this.renderData,
     this.boardSquareSize,
   }) : assert(entity is RenderableComponent);
 
@@ -82,7 +86,6 @@ class EntityPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(EntityPainter oldDelegate) {
-    return entity.shouldRepaint(oldDelegate.entity);
-  }
+  bool shouldRepaint(EntityPainter oldDelegate) =>
+      entity.shouldRepaint(oldDelegate.renderData);
 }

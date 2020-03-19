@@ -9,10 +9,7 @@ import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/systems/init.dart';
 
 class WallEntity extends Entity
-    with
-        NotEatableComponent,
-        LeadPositionComponent,
-        RenderableComponent<WallEntity> {
+    with NotEatableComponent, LeadPositionComponent, RenderableComponent {
   WallEntity(Coordinates initialLeadPosition) {
     this.leadPosition = initialLeadPosition;
 
@@ -51,10 +48,16 @@ class WallEntity extends Entity
       canvas.drawPath(wallPath, Paint()..color = Color(0xFF2E2D31));
     };
 
-    shouldRepaint = (WallEntity previousWall) {
-      return !leadPosition.equal(previousWall.leadPosition);
+    shouldRepaint = (previousWallData) {
+      return leadPosition.x != previousWallData['x'] ||
+          leadPosition.y != previousWallData['y'];
     };
   }
+
+  get renderData => {
+        'x': leadPosition.x,
+        'y': leadPosition.y,
+      };
 
   static const _svgViewBox = 512.0;
 

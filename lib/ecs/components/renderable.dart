@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:snake_game/ecs/entities/entity.dart';
 
-mixin RenderableComponent<T extends Entity> {
+mixin RenderableComponent {
   PaintFunction paint;
-  ShouldRepaintFunction<T> shouldRepaint;
+  ShouldRepaintFunction shouldRepaint;
+  Map<String, dynamic> get renderData;
 }
 
 typedef PaintFunction = void Function(Canvas canvas, double boardSquareSize);
 
-typedef ShouldRepaintFunction<T> = bool Function(T previousEntityState);
+typedef ShouldRepaintFunction = bool Function(
+    Map<String, dynamic> previousRenderData);
