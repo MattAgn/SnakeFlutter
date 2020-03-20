@@ -26,17 +26,61 @@ class SnakeEntity extends Entity
     this.leadPosition = initialLeadPosition;
 
     paint = (Canvas canvas, double boardSquareSize) {
+      // Draw body
+      if (body.isNotEmpty) {
+        for (final bodyPart in body.reversed.skip(1)) {
+          canvas.drawRect(
+              Rect.fromLTWH(
+                bodyPart.x.toDouble() * boardSquareSize,
+                bodyPart.y.toDouble() * boardSquareSize,
+                boardSquareSize,
+                boardSquareSize,
+              ),
+              Paint()..color = Color(0xFFA0C432));
+
+          canvas.drawRect(
+              Rect.fromLTWH(
+                bodyPart.x.toDouble() * boardSquareSize,
+                bodyPart.y.toDouble() * boardSquareSize,
+                movingHorizontally ? boardSquareSize / 8 : boardSquareSize,
+                movingVertically ? boardSquareSize / 8 : boardSquareSize,
+              ),
+              Paint()..color = Color(0xFF779226));
+          canvas.drawRect(
+              Rect.fromLTWH(
+                bodyPart.x.toDouble() * boardSquareSize,
+                bodyPart.y.toDouble() * boardSquareSize,
+                movingVertically ? boardSquareSize / 8 : boardSquareSize,
+                movingHorizontally ? boardSquareSize / 8 : boardSquareSize,
+              ),
+              Paint()..color = Color(0xFF779226));
+        }
+        final lastBodyPart = body.last;
+        canvas.drawOval(
+            Rect.fromLTWH(
+              (lastBodyPart.x.toDouble() - 0.5 * sin(rotation)) *
+                  boardSquareSize,
+              (lastBodyPart.y.toDouble() + 0.5 * cos(rotation)) *
+                  boardSquareSize,
+              boardSquareSize,
+              boardSquareSize,
+            ),
+            Paint()..color = Color(0xFF779226));
+      }
+
+      // Draw head
       final scaleRatio = boardSquareSize / _svgViewBox * 2;
       final scaleMatrix = Matrix4.identity()
         ..scale(scaleRatio, scaleRatio)
         ..setTranslationRaw(
-          (leadPosition.x - 0.8) * boardSquareSize,
-          (leadPosition.y + 0.5) * boardSquareSize,
+          (leadPosition.x + 0.5 - cos(rotation) + sin(rotation)) *
+              boardSquareSize,
+          (leadPosition.y + 0.5 - sin(rotation) - cos(rotation)) *
+              boardSquareSize,
           0,
         )
         ..rotateZ(rotation);
 
-      // Draw head
       for (final svgPath in _svgPaths) {
         final subPath = Path()
           ..addPath(parseSvgPathData(svgPath['path']), Offset(0, 0),
@@ -67,8 +111,6 @@ class SnakeEntity extends Entity
 
         canvas.drawPath(subPath, Paint()..color = Color(svgPolyline['fill']));
       }
-
-      // Drow body
     };
 
     shouldRepaint = (previousSnakeData) {
@@ -84,6 +126,14 @@ class SnakeEntity extends Entity
 
   double get rotation {
     return atan2(speed.dy, speed.dx) - pi / 2;
+  }
+
+  bool get movingVertically {
+    return speed.dy.abs() > 0;
+  }
+
+  bool get movingHorizontally {
+    return speed.dx.abs() > 0;
   }
 
   static const _svgPolylines = [
