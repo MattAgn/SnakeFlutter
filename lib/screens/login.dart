@@ -18,6 +18,7 @@ class _LoginState extends State<Login> {
   bool _isLoginLoading = false;
 
   _onSubmitSignup() async {
+    print("toot");
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       setState(() {
@@ -147,6 +148,7 @@ class _LoginState extends State<Login> {
                 keyboardType: TextInputType.emailAddress,
                 autovalidate: false,
                 onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+                onChanged: (_) => _firebaseError = null,
                 decoration: InputDecoration(
                   errorText: _firebaseError,
                   labelText: "Email",
@@ -164,6 +166,7 @@ class _LoginState extends State<Login> {
                 autofocus: true,
                 autovalidate: false,
                 validator: _validatePassword,
+                onChanged: (_) => _firebaseError = null,
                 decoration: InputDecoration(
                   errorText: _firebaseError,
                   hintText: "azerty123",
