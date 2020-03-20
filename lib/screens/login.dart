@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +17,16 @@ class _LoginState extends State<Login> {
   String _firebaseError;
   bool _isSignupLoading = false;
   bool _isLoginLoading = false;
+  FirebaseUser _user;
+
+  _createUserInDb() {
+    Firestore.instance
+        .collection('users')
+        .document(_user.uid)
+        .setData({"bestScore": 0, "email": _user.email})
+        .then((value) => print("saved"))
+        .catchError((err) => print(err));
+  }
 
   _onSubmitSignup() async {
     print("toot");
@@ -29,7 +40,8 @@ class _LoginState extends State<Login> {
           email: _email,
           password: _password,
         );
-        final FirebaseUser user = result.user;
+        _user = result.user;
+        _createUserInDb();
         showDialog(
             context: context,
             child: AlertDialog(
@@ -45,7 +57,6 @@ class _LoginState extends State<Login> {
                 )
               ],
             ));
-        return user;
       } catch (err) {
         if (err is PlatformException) {
           _firebaseError = err.message;
@@ -192,7 +203,7 @@ class _LoginState extends State<Login> {
                     child: _isLoginLoading ? Loader() : Text("Log in"),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ),
