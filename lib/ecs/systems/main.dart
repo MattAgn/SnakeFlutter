@@ -1,12 +1,9 @@
 import 'dart:async';
 
 import 'package:snake_game/ecs/components/controller.dart';
-import 'package:snake_game/ecs/entities/apple.dart';
+import 'package:snake_game/ecs/components/renderable.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
-import 'package:snake_game/ecs/entities/portal.dart';
-import 'package:snake_game/ecs/entities/snake.dart';
-import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/control.dart';
 import 'package:snake_game/ecs/systems/death.dart';
 import 'package:snake_game/ecs/systems/eat.dart';
@@ -88,40 +85,12 @@ class GameSystem extends System {
     notifyListeners();
   }
 
-  playOrPause() {
-    gameStatus == GameStatus.play ? pause() : play();
-  }
-
-  SnakeEntity get snake {
-    final snake = this.entities?.firstWhere((entity) => entity is SnakeEntity)
-        as SnakeEntity;
-    return snake;
-  }
-
-  AppleEntity get apple {
-    final apple = this.entities?.firstWhere((entity) => entity is AppleEntity)
-        as AppleEntity;
-    return apple;
-  }
-
-  List<WallEntity> get walls {
-    final walls = this
+  List<Entity> get renderableEntities {
+    final renderableEntities = this
         .entities
-        ?.where((entity) => entity is WallEntity)
-        ?.map((entity) => entity as WallEntity)
+        ?.where((entity) => entity is RenderableComponent)
         ?.toList();
-    return walls;
-  }
-
-  int get score => this.snake?.body?.length ?? 0;
-
-  List<PortalEntity> get portals {
-    final portals = this
-        .entities
-        ?.where((entity) => entity is PortalEntity)
-        ?.map((entity) => entity as PortalEntity)
-        ?.toList();
-    return portals;
+    return renderableEntities ?? [];
   }
 
   set direction(Direction direction) {
