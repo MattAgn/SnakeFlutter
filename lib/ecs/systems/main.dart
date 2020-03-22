@@ -14,7 +14,7 @@ import 'package:snake_game/ecs/systems/move.dart';
 import 'package:snake_game/ecs/systems/options.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
-enum GameStatus { play, pause, stop, gameOver }
+enum GameStatus { play, pause, reset, gameOver }
 
 class GameSystem extends System {
   List<Entity> entities;
@@ -35,7 +35,7 @@ class GameSystem extends System {
     this.deathSystem = DeathSystem();
     this.initSystem = InitSystem();
     this.optionsSystem = OptionsSystem(notifyGameListeners: notifyListeners);
-    this.gameStatus = GameStatus.stop;
+    this.gameStatus = GameStatus.reset;
   }
 
   initEntities() {
@@ -87,7 +87,7 @@ class GameSystem extends System {
 
   reset() {
     print("reset");
-    this.gameStatus = GameStatus.stop;
+    this.gameStatus = GameStatus.reset;
     this.timer?.cancel();
     this.initEntities();
     notifyListeners();
