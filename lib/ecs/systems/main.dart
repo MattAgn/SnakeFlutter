@@ -4,6 +4,7 @@ import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/components/renderable.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
+import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/systems/control.dart';
 import 'package:snake_game/ecs/systems/death.dart';
 import 'package:snake_game/ecs/systems/eat.dart';
@@ -83,6 +84,17 @@ class GameSystem extends System {
     print("pause");
     this.timer?.cancel();
     notifyListeners();
+  }
+
+  playOrPause() {
+    gameStatus == GameStatus.play ? pause() : play();
+  }
+
+  int get score {
+    final SnakeEntity snake = this
+        .entities
+        ?.firstWhere((entity) => entity is SnakeEntity) as SnakeEntity;
+    return snake?.body?.length;
   }
 
   List<Entity> get renderableEntities {
