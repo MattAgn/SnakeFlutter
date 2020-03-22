@@ -32,6 +32,13 @@ class Game extends StatelessWidget {
   Widget build(BuildContext context) {
     final gameSystem = Provider.of<GameSystem>(context);
     gameSystem.levelNumber = levelNumber;
+    // TODO: put below code at the initialization of the widget
+    if (gameSystem.entities == null) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        gameSystem.reset();
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(

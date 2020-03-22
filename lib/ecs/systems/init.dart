@@ -13,7 +13,6 @@ import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 const BOARD_SIZE = 30;
-const List<Coordinates> emptyList = [];
 
 class InitSystem extends System {
   static final initialSnakePosition = Coordinates(x: 2, y: 2);
@@ -25,8 +24,8 @@ class InitSystem extends System {
     int nbRandomWalls = 0,
     int nbRandomPortals = 0,
     Type surroundingBoardEntityType,
-    List<Coordinates> predefinedWallsCoordinates = emptyList,
-    List<Coordinates> predefinedPortalsCoordinates = emptyList,
+    List<Coordinates> predefinedWallsCoordinates = const [],
+    List<Coordinates> predefinedPortalsCoordinates = const [],
   }) {
     print("init entities");
     final controls = ControlsEntity();

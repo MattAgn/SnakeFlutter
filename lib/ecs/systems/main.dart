@@ -86,13 +86,11 @@ class GameSystem extends System {
   }
 
   reset() {
-    if (gameStatus != GameStatus.stop) {
-      print("reset");
-      this.gameStatus = GameStatus.stop;
-      this.timer?.cancel();
-      this.initEntities();
-      notifyListeners();
-    }
+    print("reset");
+    this.gameStatus = GameStatus.stop;
+    this.timer?.cancel();
+    this.initEntities();
+    notifyListeners();
   }
 
   pause() {

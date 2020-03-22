@@ -3,8 +3,6 @@ import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/portal.dart';
 import 'package:snake_game/ecs/systems/init.dart';
 
-const List<Coordinates> emptyList = [];
-
 class LevelOptions {
   final Type surroundingBoardEntityType;
   final int nbRandomWalls;
@@ -18,8 +16,8 @@ class LevelOptions {
       @required this.minWinningScore,
       this.nbRandomPortals = 0,
       this.nbRandomWalls = 0,
-      this.portalsCoordinates = emptyList,
-      this.wallsCoordinates = emptyList});
+      this.portalsCoordinates = const [],
+      this.wallsCoordinates = const []});
 }
 
 final levelsOptions = {
