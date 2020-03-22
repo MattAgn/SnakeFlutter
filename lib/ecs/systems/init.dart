@@ -13,6 +13,7 @@ import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 const BOARD_SIZE = 30;
+const List<Coordinates> emptyList = [];
 
 class InitSystem extends System {
   static final initialSnakePosition = Coordinates(x: 2, y: 2);
@@ -20,10 +21,13 @@ class InitSystem extends System {
   static final initialApplePosition = Coordinates(x: 10, y: 2);
   List<Entity> entities = [];
 
-  initEntities(
-      {int nbRandomWalls = 0,
-      int nbRandomPortals = 0,
-      Type surroundingBoardEntityType}) {
+  initEntities({
+    int nbRandomWalls = 0,
+    int nbRandomPortals = 0,
+    Type surroundingBoardEntityType,
+    List<Coordinates> predefinedWallsCoordinates = emptyList,
+    List<Coordinates> predefinedPortalsCoordinates = emptyList,
+  }) {
     print("init entities");
     final controls = ControlsEntity();
     this.entities = [];
@@ -31,6 +35,8 @@ class InitSystem extends System {
     // are generated based on the previous coordinates
     // while snake, apple and boardSurroundings have fixed coordinates
     _initSnake();
+    _initPredefinedWalls(predefinedWallsCoordinates);
+    _initPredefinedPortals(predefinedPortalsCoordinates);
     _initApple();
     _initBoardSurroundings(surroundingBoardEntityType);
     _initRandomPortals(nbRandomPortals);
@@ -96,6 +102,16 @@ class InitSystem extends System {
           InitSystem.getRandomCoordinates(this.entities, [randomLeadPosition]);
       this.entities.add(PortalEntity(randomLeadPosition, randomExitPosition));
     }
+  }
+
+  void _initPredefinedWalls(List<Coordinates> predefinedWallsCoordinates) {
+    for (final wallCoordinates in predefinedWallsCoordinates) {
+      this.entities.add(WallEntity(wallCoordinates));
+    }
+  }
+
+  void _initPredefinedPortals(List<Coordinates> predefinedPortalsCoordinates) {
+    // TODO: to implement
   }
 
   /// TODO: improve this function so that it does not use recursion to find

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/components/renderable.dart';
+import 'package:snake_game/ecs/data/levels.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
@@ -25,6 +26,7 @@ class GameSystem extends System {
   OptionsSystem optionsSystem;
   Timer timer;
   GameStatus gameStatus;
+  int levelNumber;
 
   GameSystem() {
     this.moveSystem = MoveSystem();
@@ -37,18 +39,30 @@ class GameSystem extends System {
   }
 
   initEntities() {
-    return this.initSystem.initEntities(
-          nbRandomPortals: this.optionsSystem.nbRandomPortals,
-          nbRandomWalls: this.optionsSystem.nbRandomWalls,
-          surroundingBoardEntityType: optionsSystem.surroundingBoardEntityType,
-        );
+    if (levelNumber != null) {
+      LevelOptions levelOptions = levelsOptions[levelNumber];
+      this.entities = this.initSystem.initEntities(
+            nbRandomPortals: levelOptions.nbRandomPortals,
+            nbRandomWalls: levelOptions.nbRandomWalls,
+            surroundingBoardEntityType: levelOptions.surroundingBoardEntityType,
+            predefinedPortalsCoordinates: levelOptions.portalsCoordinates,
+            predefinedWallsCoordinates: levelOptions.wallsCoordinates,
+          );
+    } else {
+      this.entities = this.initSystem.initEntities(
+            nbRandomPortals: this.optionsSystem.nbRandomPortals,
+            nbRandomWalls: this.optionsSystem.nbRandomWalls,
+            surroundingBoardEntityType:
+                optionsSystem.surroundingBoardEntityType,
+          );
+    }
   }
 
   play() {
     print("play");
     this.gameStatus = GameStatus.play;
     if (this.entities == null) {
-      this.entities = this.initEntities();
+      this.initEntities();
     }
     this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
       controlSystem.handleEntities(entities);
@@ -61,7 +75,7 @@ class GameSystem extends System {
   }
 
   replay() {
-    this.entities = this.initEntities();
+    this.initEntities();
     play();
   }
 
@@ -71,12 +85,14 @@ class GameSystem extends System {
     this.timer?.cancel();
   }
 
-  stop() {
-    print("stop");
-    this.gameStatus = GameStatus.stop;
-    this.timer?.cancel();
-    this.entities = this.initEntities();
-    notifyListeners();
+  reset() {
+    if (gameStatus != GameStatus.stop) {
+      print("reset");
+      this.gameStatus = GameStatus.stop;
+      this.timer?.cancel();
+      this.initEntities();
+      notifyListeners();
+    }
   }
 
   pause() {
@@ -94,7 +110,7 @@ class GameSystem extends System {
     final SnakeEntity snake = this
         .entities
         ?.firstWhere((entity) => entity is SnakeEntity) as SnakeEntity;
-    return snake?.body?.length;
+    return snake?.body?.length ?? 0;
   }
 
   List<Entity> get renderableEntities {

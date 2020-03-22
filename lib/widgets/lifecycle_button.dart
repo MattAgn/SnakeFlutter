@@ -53,7 +53,7 @@ class LifecycleButtons extends StatelessWidget {
     lifeCycleButtons.add(RaisedButton.icon(
       label: Text("Stop"),
       icon: Icon(Icons.stop),
-      onPressed: gameSystem.stop,
+      onPressed: gameSystem.reset,
     ));
 
     return lifeCycleButtons;

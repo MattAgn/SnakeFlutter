@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 import 'package:snake_game/screens/game.dart';
 import 'package:snake_game/screens/landing.dart';
+import 'package:snake_game/screens/levels.dart';
 import 'package:snake_game/screens/login.dart';
 import 'package:snake_game/screens/options.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
           "/game": (context) => Game(),
           "/options": (context) => Options(),
           "/login": (context) => Login(),
+          "/levels": (context) => Levels(),
         },
       ),
     );

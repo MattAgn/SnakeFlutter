@@ -39,7 +39,7 @@ class KeyboardControls extends StatelessWidget {
             gameSystem.playOrPause();
             break;
           case ENTER_KEY_ID:
-            gameSystem.stop();
+            gameSystem.reset();
             break;
         }
       }

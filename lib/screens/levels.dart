@@ -30,7 +30,7 @@ class Levels extends StatelessWidget {
               return LevelButton(
                 buttonSize: levelButtonSize,
                 index: index,
-                onPressed: index == 0 ? onPressed(context, index) : null,
+                onPressed: index < 3 ? onPressed(context, index) : null,
               );
             }),
           )),
