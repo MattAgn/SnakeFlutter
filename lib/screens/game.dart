@@ -43,15 +43,17 @@ class Game extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: Text(levelNumber != null ? "Level $levelNumber" : "Game"),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/options");
-              gameSystem.pause();
-            },
-            icon: Icon(Icons.settings),
-          )
-        ],
+        actions: levelNumber == null
+            ? <Widget>[
+                IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/options");
+                    gameSystem.pause();
+                  },
+                  icon: Icon(Icons.settings),
+                )
+              ]
+            : null,
       ),
       body: SafeArea(
         child: kIsWeb ? _renderWebGame() : _renderMobileGame(),
