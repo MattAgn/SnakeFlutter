@@ -29,13 +29,13 @@ dependencies:
   google_sign_in: ^4.1.4
   email_validator: ^1.0.0
   cloud_firestore: ^0.13.4
+  pedantic: ^1.8.0  
 
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
+    
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
