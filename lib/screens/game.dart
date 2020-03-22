@@ -8,6 +8,10 @@ import 'package:snake_game/widgets/keyboard_controls.dart';
 import 'package:snake_game/widgets/lifecycle_button.dart';
 
 class Game extends StatelessWidget {
+  final int levelNumber;
+
+  Game({this.levelNumber});
+
   _renderWebGame() {
     return KeyboardControls(
       child: Column(
@@ -27,10 +31,11 @@ class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameSystem = Provider.of<GameSystem>(context);
+    gameSystem.levelNumber = levelNumber;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: Text("Game"),
+        title: Text(levelNumber != null ? "Level $levelNumber" : "Game"),
         actions: <Widget>[
           IconButton(
             onPressed: () {

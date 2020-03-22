@@ -19,6 +19,12 @@ class Landing extends StatelessWidget {
     };
   }
 
+  onPressLevels(context) {
+    return () {
+      Navigator.pushNamed(context, "/levels");
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,6 +63,18 @@ class Landing extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: onPressOptions(context),
+                  padding: EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                ),
+                SizedBox(height: 20),
+                RaisedButton(
+                  child: Text(
+                    "Levels",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  onPressed: onPressLevels(context),
                   padding: EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
