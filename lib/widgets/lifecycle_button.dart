@@ -13,6 +13,11 @@ class LifecycleButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           ...lifeCycleButtons,
+          SizedBox(width: 20),
+          Text(
+            "Score: ${gameSystem.score}",
+            style: TextStyle(fontSize: 20),
+          ),
         ],
       ),
     );
@@ -48,7 +53,7 @@ class LifecycleButtons extends StatelessWidget {
     lifeCycleButtons.add(RaisedButton.icon(
       label: Text("Stop"),
       icon: Icon(Icons.stop),
-      onPressed: gameSystem.stop,
+      onPressed: gameSystem.reset,
     ));
 
     return lifeCycleButtons;

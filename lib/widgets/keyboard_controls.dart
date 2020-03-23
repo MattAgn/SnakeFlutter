@@ -4,6 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 
+const ARROW_RIGHT_KEY_ID = 0x10007004f;
+const ARROW_LEFT_KEY_ID = 0x100070050;
+const ARROW_UP_KEY_ID = 0x100070052;
+const ARROW_DOWN_KEY_ID = 0x100070051;
+const SPACE_KEY_ID = 0x00000020;
+const ENTER_KEY_ID = 0x100070028;
+
 class KeyboardControls extends StatelessWidget {
   final Widget child;
 
@@ -13,19 +20,26 @@ class KeyboardControls extends StatelessWidget {
     final gameSystem = Provider.of<GameSystem>(context, listen: false);
 
     return (RawKeyEvent value) {
+      print(value);
       if (value is RawKeyDownEvent) {
         switch (value.data.logicalKey.keyId) {
-          case 0x100070052:
+          case ARROW_UP_KEY_ID:
             gameSystem.direction = Direction.up;
             break;
-          case 0x100070051:
+          case ARROW_DOWN_KEY_ID:
             gameSystem.direction = Direction.down;
             break;
-          case 0x10007004f:
+          case ARROW_RIGHT_KEY_ID:
             gameSystem.direction = Direction.right;
             break;
-          case 0x100070050:
+          case ARROW_LEFT_KEY_ID:
             gameSystem.direction = Direction.left;
+            break;
+          case SPACE_KEY_ID:
+            gameSystem.playOrPause();
+            break;
+          case ENTER_KEY_ID:
+            gameSystem.reset();
             break;
         }
       }
