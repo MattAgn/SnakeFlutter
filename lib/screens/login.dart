@@ -29,9 +29,9 @@ class _LoginState extends State<Login> {
   }
 
   _onSubmitSignup() async {
-    print("toot");
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    final formState = _formKey.currentState;
+    if (formState.validate()) {
+      formState.save();
       setState(() {
         _isSignupLoading = true;
       });
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _formKey.currentState.reset();
+                    formState.reset();
                   },
                   child: Text("I'm so happy!"),
                 )
@@ -60,7 +60,7 @@ class _LoginState extends State<Login> {
       } catch (err) {
         if (err is PlatformException) {
           _firebaseError = err.message;
-          _formKey.currentState.validate();
+          formState.validate();
         }
         print(err);
       } finally {
@@ -72,8 +72,9 @@ class _LoginState extends State<Login> {
   }
 
   _onSubmitLogin() async {
-    _formKey.currentState.save();
-    if (_formKey.currentState.validate()) {
+    final formState = _formKey.currentState;
+    formState.save();
+    if (formState.validate()) {
       setState(() {
         _isLoginLoading = true;
       });
@@ -92,7 +93,7 @@ class _LoginState extends State<Login> {
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _formKey.currentState.reset();
+                    formState.reset();
                   },
                   child: Text("I'm so happy!"),
                 )
@@ -102,7 +103,7 @@ class _LoginState extends State<Login> {
       } catch (err) {
         if (err is PlatformException) {
           _firebaseError = err.message;
-          _formKey.currentState.validate();
+          formState.validate();
         }
         print(err);
       } finally {
