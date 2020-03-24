@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flare_flutter/flare_actor.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,16 @@ class GameBoard extends StatelessWidget {
       height: boardPixelSize,
       width: boardPixelSize,
       child: Stack(
-        children: entityPainters,
+        children: [
+          ...entityPainters,
+          Positioned(
+            top: 40,
+            left: 40,
+            width: boardSquareSize,
+            height: boardSquareSize,
+            child: FlareActor('assets/animations/apple.flr'),
+          ),
+        ],
       ),
     );
   }
