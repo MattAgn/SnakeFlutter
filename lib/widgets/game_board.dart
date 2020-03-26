@@ -22,12 +22,14 @@ class GameBoard extends StatelessWidget {
         min(minimumHeight, MediaQuery.of(context).size.width);
     final boardSquareSize = boardPixelSize / BOARD_SIZE;
 
-    return Container(
-      color: Colors.black,
+    return SizedBox(
       height: boardPixelSize,
       width: boardPixelSize,
-      child: Stack(
-        children: gameSystem.renderEntities(boardSquareSize),
+      child: ClipRect(
+        clipper: BoardRect(boardPixelSize),
+        child: Stack(
+          children: gameSystem.renderEntities(boardSquareSize),
+        ),
       ),
     );
   }
@@ -51,5 +53,21 @@ class GameBoard extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class BoardRect extends CustomClipper<Rect> {
+  double boardPixelSize;
+
+  BoardRect(this.boardPixelSize);
+
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromLTRB(0.0, 0.0, boardPixelSize, boardPixelSize);
+  }
+
+  @override
+  bool shouldReclip(BoardRect oldClipper) {
+    return boardPixelSize != oldClipper.boardPixelSize;
   }
 }
