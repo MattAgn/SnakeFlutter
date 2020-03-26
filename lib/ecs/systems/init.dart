@@ -65,24 +65,24 @@ class InitSystem extends System {
 
   void _initBoardSurroundingPortals() {
     final List<PortalEntity> portals = [];
-    for (var i = 0; i <= BOARD_SIZE; i++) {
+    for (var i = 0; i < BOARD_SIZE; i++) {
       portals.add(PortalEntity(
-          Coordinates(x: BOARD_SIZE, y: i), Coordinates(x: 1, y: i)));
+          Coordinates(x: BOARD_SIZE, y: i), Coordinates(x: -1, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: BOARD_SIZE), Coordinates(x: i, y: 1)));
+          Coordinates(x: i, y: BOARD_SIZE), Coordinates(x: i, y: -1)));
       portals.add(PortalEntity(
-          Coordinates(x: 0, y: i), Coordinates(x: BOARD_SIZE - 1, y: i)));
+          Coordinates(x: -1, y: i), Coordinates(x: BOARD_SIZE, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: 0), Coordinates(x: i, y: BOARD_SIZE - 1)));
+          Coordinates(x: i, y: -1), Coordinates(x: i, y: BOARD_SIZE)));
     }
     this.entities.addAll(portals);
   }
 
   void _initBoardSurroundingWalls() {
     final List<WallEntity> walls = [];
-    for (var i = 0; i <= BOARD_SIZE; i++) {
-      walls.add(WallEntity(Coordinates(x: BOARD_SIZE, y: i)));
-      walls.add(WallEntity(Coordinates(x: i, y: BOARD_SIZE)));
+    for (var i = 0; i < BOARD_SIZE; i++) {
+      walls.add(WallEntity(Coordinates(x: BOARD_SIZE - 1, y: i)));
+      walls.add(WallEntity(Coordinates(x: i, y: BOARD_SIZE - 1)));
       walls.add(WallEntity(Coordinates(x: 0, y: i)));
       walls.add(WallEntity(Coordinates(x: i, y: 0)));
     }
