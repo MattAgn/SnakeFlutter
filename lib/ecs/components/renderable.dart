@@ -1,12 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:snake_game/ecs/components/position.dart';
 
 mixin RenderableComponent {
-  PaintFunction paint;
-  ShouldRepaintFunction shouldRepaint;
-  Map<String, dynamic> get renderData;
+  EntityPainter paint;
 }
 
-typedef PaintFunction = void Function(Canvas canvas, double boardSquareSize);
+typedef EntityPainter = List<PositionedOnBoard> Function(
+    double boardSquareSize);
 
-typedef ShouldRepaintFunction = bool Function(
-    Map<String, dynamic> previousRenderData);
+class PositionedOnBoard extends StatelessWidget {
+  final Widget child;
+  final double boardSquareSize;
+  final Coordinates origin;
+  final double angle;
+  final double scale;
+
+  PositionedOnBoard({
+    Key key,
+    @required this.child,
+    @required this.boardSquareSize,
+    @required this.origin,
+    this.angle = 0,
+    this.scale = 1,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: origin.x * boardSquareSize,
+      top: origin.y * boardSquareSize,
+      width: boardSquareSize,
+      height: boardSquareSize,
+      child: Transform.scale(
+        scale: scale,
+        alignment: FractionalOffset.center,
+        child: Transform.rotate(
+          angle: angle,
+          alignment: FractionalOffset.center,
+          child: child,
+        ),
+      ),
+    );
+  }
+}
