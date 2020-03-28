@@ -8,8 +8,8 @@ import 'package:snake_game/ecs/entities/entity.dart';
 class WallEntity extends Entity
     with NotEatableComponent, LeadPositionComponent, RenderableComponent {
   WallEntity(Coordinates initialLeadPosition) {
-    WallEntity.numberOfWall++;
-    this.wallNumber = WallEntity.numberOfWall;
+    WallEntity.numberOfWalls++;
+    this.wallNumber = WallEntity.numberOfWalls;
 
     this.leadPosition = initialLeadPosition;
 
@@ -27,5 +27,5 @@ class WallEntity extends Entity
 
   int wallNumber;
 
-  static int numberOfWall = 0;
+  static int numberOfWalls = 0;
 }

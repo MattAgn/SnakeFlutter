@@ -14,8 +14,8 @@ class AppleEntity extends Entity
         SpanwableComponent,
         RenderableComponent {
   AppleEntity(Coordinates initialApplePosition) {
-    AppleEntity.numberOfApple++;
-    this.appleNumber = AppleEntity.numberOfApple;
+    AppleEntity.numberOfApples++;
+    this.appleNumber = AppleEntity.numberOfApples;
 
     leadPosition = initialApplePosition;
 
@@ -34,5 +34,5 @@ class AppleEntity extends Entity
 
   int appleNumber;
 
-  static int numberOfApple = 0;
+  static int numberOfApples = 0;
 }
