@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/ecs/components/renderable.dart';
 import 'package:snake_game/ecs/systems/init.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 
@@ -15,34 +14,22 @@ class GameBoard extends StatelessWidget {
     if (gameSystem.gameStatus == GameStatus.gameOver) {
       Future.delayed(Duration.zero, () => _gameOver(context));
     }
+
     final minimumHeight = kIsWeb
         ? MediaQuery.of(context).size.height * 0.8
         : MediaQuery.of(context).size.height * 0.5;
-
     final boardPixelSize =
         min(minimumHeight, MediaQuery.of(context).size.width);
-    final boardSize = Size.square(boardPixelSize);
-    final boardSquareSize = (boardPixelSize / BOARD_SIZE).floorToDouble();
+    final boardSquareSize = boardPixelSize / BOARD_SIZE;
 
-    final renderableEntities = gameSystem.renderableEntities;
-    final entityPainters = renderableEntities.map((entity) {
-      final entityToRender = entity as RenderableComponent;
-      return CustomPaint(
-        size: boardSize,
-        painter: EntityPainter(
-          entity: entity,
-          renderData: Map<String, dynamic>.from(entityToRender.renderData),
-          boardSquareSize: boardSquareSize,
-        ),
-      );
-    }).toList();
-
-    return Container(
-      color: Colors.black,
+    return SizedBox(
       height: boardPixelSize,
       width: boardPixelSize,
-      child: Stack(
-        children: entityPainters,
+      child: ClipRect(
+        clipper: BoardRect(boardPixelSize),
+        child: Stack(
+          children: gameSystem.renderEntities(boardSquareSize),
+        ),
       ),
     );
   }
@@ -69,23 +56,18 @@ class GameBoard extends StatelessWidget {
   }
 }
 
-class EntityPainter extends CustomPainter {
-  dynamic entity;
-  Map<String, dynamic> renderData;
-  double boardSquareSize;
+class BoardRect extends CustomClipper<Rect> {
+  double boardPixelSize;
 
-  EntityPainter({
-    this.entity,
-    this.renderData,
-    this.boardSquareSize,
-  }) : assert(entity is RenderableComponent);
+  BoardRect(this.boardPixelSize);
 
   @override
-  void paint(Canvas canvas, Size size) {
-    entity.paint(canvas, boardSquareSize);
+  Rect getClip(Size size) {
+    return Rect.fromLTRB(0.0, 0.0, boardPixelSize, boardPixelSize);
   }
 
   @override
-  bool shouldRepaint(EntityPainter oldDelegate) =>
-      entity.shouldRepaint(oldDelegate.renderData);
+  bool shouldReclip(BoardRect oldClipper) {
+    return boardPixelSize != oldClipper.boardPixelSize;
+  }
 }

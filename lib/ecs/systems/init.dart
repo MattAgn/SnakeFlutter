@@ -5,6 +5,7 @@ import 'package:snake_game/ecs/components/body.dart';
 import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/apple.dart';
+import 'package:snake_game/ecs/entities/board.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/portal.dart';
@@ -12,7 +13,7 @@ import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
-const BOARD_SIZE = 30;
+const BOARD_SIZE = 20;
 
 class InitSystem extends System {
   static final initialSnakePosition = Coordinates(x: 2, y: 2);
@@ -29,6 +30,7 @@ class InitSystem extends System {
   }) {
     print("init entities");
     final controls = ControlsEntity();
+    final board = BoardEntity();
     this.entities = [];
     // order is important below because random coordinates
     // are generated based on the previous coordinates
@@ -40,7 +42,7 @@ class InitSystem extends System {
     _initBoardSurroundings(surroundingBoardEntityType);
     _initRandomPortals(nbRandomPortals);
     _initRandomWalls(nbRandomWalls);
-    return [controls, ...this.entities];
+    return [controls, board, ...this.entities];
   }
 
   void _initApple() {
@@ -63,24 +65,24 @@ class InitSystem extends System {
 
   void _initBoardSurroundingPortals() {
     final List<PortalEntity> portals = [];
-    for (var i = 0; i <= BOARD_SIZE; i++) {
+    for (var i = 0; i < BOARD_SIZE; i++) {
       portals.add(PortalEntity(
-          Coordinates(x: BOARD_SIZE, y: i), Coordinates(x: 1, y: i)));
+          Coordinates(x: BOARD_SIZE, y: i), Coordinates(x: -1, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: BOARD_SIZE), Coordinates(x: i, y: 1)));
+          Coordinates(x: i, y: BOARD_SIZE), Coordinates(x: i, y: -1)));
       portals.add(PortalEntity(
-          Coordinates(x: 0, y: i), Coordinates(x: BOARD_SIZE - 1, y: i)));
+          Coordinates(x: -1, y: i), Coordinates(x: BOARD_SIZE, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: 0), Coordinates(x: i, y: BOARD_SIZE - 1)));
+          Coordinates(x: i, y: -1), Coordinates(x: i, y: BOARD_SIZE)));
     }
     this.entities.addAll(portals);
   }
 
   void _initBoardSurroundingWalls() {
     final List<WallEntity> walls = [];
-    for (var i = 0; i <= BOARD_SIZE; i++) {
-      walls.add(WallEntity(Coordinates(x: BOARD_SIZE, y: i)));
-      walls.add(WallEntity(Coordinates(x: i, y: BOARD_SIZE)));
+    for (var i = 0; i < BOARD_SIZE; i++) {
+      walls.add(WallEntity(Coordinates(x: BOARD_SIZE - 1, y: i)));
+      walls.add(WallEntity(Coordinates(x: i, y: BOARD_SIZE - 1)));
       walls.add(WallEntity(Coordinates(x: 0, y: i)));
       walls.add(WallEntity(Coordinates(x: i, y: 0)));
     }

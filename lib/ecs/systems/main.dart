@@ -111,12 +111,17 @@ class GameSystem extends System {
     return snake?.body?.length ?? 0;
   }
 
-  List<Entity> get renderableEntities {
-    final renderableEntities = this
+  List<PositionedOnBoard> renderEntities(double boardSquareSize) {
+    final renderedEntities = this
         .entities
         ?.where((entity) => entity is RenderableComponent)
+        ?.map((entity) {
+          final renderableEntity = entity as RenderableComponent;
+          return renderableEntity.paint(boardSquareSize);
+        })
+        ?.expand((renderedElement) => renderedElement)
         ?.toList();
-    return renderableEntities ?? [];
+    return renderedEntities ?? [];
   }
 
   set direction(Direction direction) {
