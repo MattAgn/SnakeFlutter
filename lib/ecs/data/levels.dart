@@ -9,18 +9,24 @@ class LevelOptions {
   final List<Coordinates> wallsCoordinates;
   final List<Coordinates> portalsCoordinates;
   final int minWinningScore;
+  final int boardSize;
+
+  /// inverse of the time in milliseconds between 2 iterations of the game loop
+  final double gameSpeed;
 
   LevelOptions(
       {this.surroundingBoardEntityType = PortalEntity,
       @required this.minWinningScore,
       this.nbRandomPortals = 0,
+      this.boardSize = 20,
+      this.gameSpeed = 1 / 100,
       this.nbRandomWalls = 0,
       this.portalsCoordinates = const [],
       this.wallsCoordinates = const []});
 }
 
 final levelsOptions = {
-  0: LevelOptions(minWinningScore: 30),
+  0: LevelOptions(minWinningScore: 30, boardSize: 10),
   1: LevelOptions(minWinningScore: 30, wallsCoordinates: [
     Coordinates(x: (25 / 2).floor() - 7, y: (25 / 2).floor()),
     Coordinates(x: (25 / 2).floor() - 6, y: (25 / 2).floor()),

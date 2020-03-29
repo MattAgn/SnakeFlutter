@@ -26,7 +26,7 @@ class GameSystem extends System {
   OptionsSystem optionsSystem;
   Timer timer;
   GameStatus gameStatus;
-  int levelNumber;
+  int _levelNumber;
 
   GameSystem() {
     this.moveSystem = MoveSystem();
@@ -39,25 +39,7 @@ class GameSystem extends System {
   }
 
   initEntities() {
-    if (levelNumber != null) {
-      LevelOptions levelOptions = levelsOptions[levelNumber];
-      this.entities = this.initSystem.initEntities(
-            nbRandomPortals: levelOptions.nbRandomPortals,
-            nbRandomWalls: levelOptions.nbRandomWalls,
-            boardSize: 20,
-            surroundingBoardEntityType: levelOptions.surroundingBoardEntityType,
-            predefinedPortalsCoordinates: levelOptions.portalsCoordinates,
-            predefinedWallsCoordinates: levelOptions.wallsCoordinates,
-          );
-    } else {
-      this.entities = this.initSystem.initEntities(
-            nbRandomPortals: optionsSystem.nbRandomPortals,
-            nbRandomWalls: optionsSystem.nbRandomWalls,
-            boardSize: optionsSystem.boardSize,
-            surroundingBoardEntityType:
-                optionsSystem.surroundingBoardEntityType,
-          );
-    }
+    this.entities = this.initSystem.initEntities(this.optionsSystem);
   }
 
   play() {
@@ -66,7 +48,8 @@ class GameSystem extends System {
     if (this.entities == null) {
       this.initEntities();
     }
-    this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
+    this.timer = Timer.periodic(
+        Duration(milliseconds: (1 / optionsSystem.gameSpeed).round()), (_) {
       controlSystem.handleEntities(entities);
       moveSystem.handleEntities(entities);
       eatSystem.handleEntities(entities, optionsSystem);
@@ -143,4 +126,19 @@ class GameSystem extends System {
     controlSystem.handleEntities(entities);
     notifyListeners();
   }
+
+  set levelNumber(int levelNumber) {
+    LevelOptions levelOptions = levelsOptions[levelNumber];
+    optionsSystem
+      ..boardSize = levelOptions.boardSize
+      ..gameSpeed = levelOptions.gameSpeed
+      ..wallsCoordinates = levelOptions.wallsCoordinates
+      ..minWinningScore = levelOptions.minWinningScore
+      ..surroundingBoardEntityType = levelOptions.surroundingBoardEntityType
+      ..nbRandomPortals = levelOptions.nbRandomPortals
+      ..nbRandomWalls = levelOptions.nbRandomWalls;
+    _levelNumber = levelNumber;
+  }
+
+  get levelNumber => _levelNumber;
 }

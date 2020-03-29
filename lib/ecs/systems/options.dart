@@ -5,14 +5,14 @@ import 'package:snake_game/ecs/systems/system.dart';
 
 class OptionsSystem extends System {
   Function notifyGameListeners;
+  List<Coordinates> wallsCoordinates = [];
+  int minWinningScore;
   int _nbRandomWalls = 0;
   int _nbRandomPortals = 0;
-  int _boardSize = 30;
-  List<Coordinates> _wallsCoordinates = [];
-  int _minWinningScore;
+  int _boardSize = 10;
 
-  /// time in milliseconds between 2 iterations of the game loop
-  int _gameSpeed = 100;
+  /// inverse of the time in milliseconds between 2 iterations of the game loop
+  double _gameSpeed = 1 / 100;
 
   /// default = [portalEntity:true, wallEntity: false]
   List<bool> surroundingBoardEntityTypesSelected = [true, false];
@@ -32,7 +32,14 @@ class OptionsSystem extends System {
     this.notifyGameListeners();
   }
 
-  get surroundingBoardEntityType =>
+  set surroundingBoardEntityType(Type surroundingBoardEntityType) {
+    surroundingBoardEntityTypesSelected =
+        surroundingBoardEntityType == PortalEntity
+            ? [true, false]
+            : [false, true];
+  }
+
+  Type get surroundingBoardEntityType =>
       surroundingBoardEntityTypesSelected[0] ? PortalEntity : WallEntity;
 
   set nbRandomWalls(int nbRandomWalls) {
@@ -50,20 +57,16 @@ class OptionsSystem extends System {
     notifyGameListeners();
   }
 
-  set gameSpeed(int gameSpeed) {
+  set gameSpeed(double gameSpeed) {
     _gameSpeed = gameSpeed;
     notifyGameListeners();
   }
 
-  get nbRandomWalls => _nbRandomWalls;
+  int get nbRandomWalls => _nbRandomWalls;
 
-  get nbRandomPortals => _nbRandomPortals;
+  int get nbRandomPortals => _nbRandomPortals;
 
-  get gameSpeed => _gameSpeed;
+  double get gameSpeed => _gameSpeed;
 
-  get boardSize => _boardSize;
-
-  get minWinningScore => _minWinningScore;
-
-  get wallsCoordinates => _wallsCoordinates;
+  int get boardSize => _boardSize;
 }

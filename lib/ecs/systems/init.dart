@@ -11,6 +11,7 @@ import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/portal.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/entities/wall.dart';
+import 'package:snake_game/ecs/systems/options.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class InitSystem extends System {
@@ -19,28 +20,21 @@ class InitSystem extends System {
   static final initialApplePosition = Coordinates(x: 10, y: 2);
   List<Entity> entities = [];
 
-  initEntities({
-    int nbRandomWalls = 0,
-    int nbRandomPortals = 0,
-    int boardSize,
-    Type surroundingBoardEntityType,
-    List<Coordinates> predefinedWallsCoordinates = const [],
-    List<Coordinates> predefinedPortalsCoordinates = const [],
-  }) {
+  initEntities(OptionsSystem optionsSystem) {
     print("init entities");
     final controls = ControlsEntity();
-    final board = BoardEntity(boardSize);
+    final board = BoardEntity(optionsSystem.boardSize);
     this.entities = [];
     // order is important below because random coordinates
     // are generated based on the previous coordinates
     // while snake, apple and boardSurroundings have fixed coordinates
     _initSnake();
-    _initPredefinedWalls(predefinedWallsCoordinates);
-    _initPredefinedPortals(predefinedPortalsCoordinates);
+    _initPredefinedWalls(optionsSystem.wallsCoordinates);
     _initApple();
-    _initBoardSurroundings(surroundingBoardEntityType, boardSize);
-    _initRandomPortals(nbRandomPortals, boardSize);
-    _initRandomWalls(nbRandomWalls, boardSize);
+    _initBoardSurroundings(
+        optionsSystem.surroundingBoardEntityType, optionsSystem.boardSize);
+    _initRandomPortals(optionsSystem.nbRandomPortals, optionsSystem.boardSize);
+    _initRandomWalls(optionsSystem.nbRandomWalls, optionsSystem.boardSize);
     return [controls, board, ...this.entities];
   }
 
