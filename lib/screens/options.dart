@@ -66,6 +66,33 @@ class Options extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 60),
+              Column(
+                children: <Widget>[
+                  Text("Game Speed: ${optionsSystem.gameSpeed}"),
+                  SizedBox(height: 5),
+                  Slider(
+                    value: optionsSystem.gameSpeed.toDouble(),
+                    max: 1 / 10,
+                    min: 1 / 200,
+                    onChanged: (value) => optionsSystem.gameSpeed = value,
+                  ),
+                ],
+              ),
+              SizedBox(height: 60),
+              Column(
+                children: <Widget>[
+                  Text("Board size: ${optionsSystem.boardSize}"),
+                  SizedBox(height: 5),
+                  Slider(
+                    value: optionsSystem.boardSize.toDouble(),
+                    max: 50,
+                    min: 10,
+                    onChanged: (value) =>
+                        optionsSystem.boardSize = value.toInt(),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
