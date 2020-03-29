@@ -44,14 +44,16 @@ class GameSystem extends System {
       this.entities = this.initSystem.initEntities(
             nbRandomPortals: levelOptions.nbRandomPortals,
             nbRandomWalls: levelOptions.nbRandomWalls,
+            boardSize: 20,
             surroundingBoardEntityType: levelOptions.surroundingBoardEntityType,
             predefinedPortalsCoordinates: levelOptions.portalsCoordinates,
             predefinedWallsCoordinates: levelOptions.wallsCoordinates,
           );
     } else {
       this.entities = this.initSystem.initEntities(
-            nbRandomPortals: this.optionsSystem.nbRandomPortals,
-            nbRandomWalls: this.optionsSystem.nbRandomWalls,
+            nbRandomPortals: optionsSystem.nbRandomPortals,
+            nbRandomWalls: optionsSystem.nbRandomWalls,
+            boardSize: optionsSystem.boardSize,
             surroundingBoardEntityType:
                 optionsSystem.surroundingBoardEntityType,
           );
@@ -67,7 +69,7 @@ class GameSystem extends System {
     this.timer = Timer.periodic(Duration(milliseconds: 70), (_) {
       controlSystem.handleEntities(entities);
       moveSystem.handleEntities(entities);
-      eatSystem.handleEntities(entities);
+      eatSystem.handleEntities(entities, optionsSystem);
       deathSystem.handleEntities(entities);
       deathSystem.handleDeadEntities(entities, setGameOver);
       notifyListeners();

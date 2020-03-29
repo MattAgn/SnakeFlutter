@@ -13,8 +13,6 @@ import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
-const BOARD_SIZE = 20;
-
 class InitSystem extends System {
   static final initialSnakePosition = Coordinates(x: 2, y: 2);
   static final initialSnakeSpeed = Speed(dx: 1, dy: 0);
@@ -24,13 +22,14 @@ class InitSystem extends System {
   initEntities({
     int nbRandomWalls = 0,
     int nbRandomPortals = 0,
+    int boardSize,
     Type surroundingBoardEntityType,
     List<Coordinates> predefinedWallsCoordinates = const [],
     List<Coordinates> predefinedPortalsCoordinates = const [],
   }) {
     print("init entities");
     final controls = ControlsEntity();
-    final board = BoardEntity();
+    final board = BoardEntity(boardSize);
     this.entities = [];
     // order is important below because random coordinates
     // are generated based on the previous coordinates
@@ -39,9 +38,9 @@ class InitSystem extends System {
     _initPredefinedWalls(predefinedWallsCoordinates);
     _initPredefinedPortals(predefinedPortalsCoordinates);
     _initApple();
-    _initBoardSurroundings(surroundingBoardEntityType);
-    _initRandomPortals(nbRandomPortals);
-    _initRandomWalls(nbRandomWalls);
+    _initBoardSurroundings(surroundingBoardEntityType, boardSize);
+    _initRandomPortals(nbRandomPortals, boardSize);
+    _initRandomWalls(nbRandomWalls, boardSize);
     return [controls, board, ...this.entities];
   }
 
@@ -53,54 +52,56 @@ class InitSystem extends System {
     this.entities.add(SnakeEntity(initialSnakePosition, initialSnakeSpeed));
   }
 
-  void _initBoardSurroundings(Type surroundingBoardEntityType) {
+  void _initBoardSurroundings(Type surroundingBoardEntityType, int boardSize) {
     if (surroundingBoardEntityType == PortalEntity) {
-      _initBoardSurroundingPortals();
+      _initBoardSurroundingPortals(boardSize);
     } else if (surroundingBoardEntityType == WallEntity) {
-      _initBoardSurroundingWalls();
+      _initBoardSurroundingWalls(boardSize);
     } else {
       throw ErrorDescription("INVALID SURROUNDING ENTITY");
     }
   }
 
-  void _initBoardSurroundingPortals() {
+  void _initBoardSurroundingPortals(int boardSize) {
     final List<PortalEntity> portals = [];
-    for (var i = 0; i < BOARD_SIZE; i++) {
+    for (var i = 0; i < boardSize; i++) {
       portals.add(PortalEntity(
-          Coordinates(x: BOARD_SIZE, y: i), Coordinates(x: -1, y: i)));
+          Coordinates(x: boardSize, y: i), Coordinates(x: -1, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: BOARD_SIZE), Coordinates(x: i, y: -1)));
+          Coordinates(x: i, y: boardSize), Coordinates(x: i, y: -1)));
       portals.add(PortalEntity(
-          Coordinates(x: -1, y: i), Coordinates(x: BOARD_SIZE, y: i)));
+          Coordinates(x: -1, y: i), Coordinates(x: boardSize, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: -1), Coordinates(x: i, y: BOARD_SIZE)));
+          Coordinates(x: i, y: -1), Coordinates(x: i, y: boardSize)));
     }
     this.entities.addAll(portals);
   }
 
-  void _initBoardSurroundingWalls() {
+  void _initBoardSurroundingWalls(int boardSize) {
     final List<WallEntity> walls = [];
-    for (var i = 0; i < BOARD_SIZE; i++) {
-      walls.add(WallEntity(Coordinates(x: BOARD_SIZE - 1, y: i)));
-      walls.add(WallEntity(Coordinates(x: i, y: BOARD_SIZE - 1)));
+    for (var i = 0; i < boardSize; i++) {
+      walls.add(WallEntity(Coordinates(x: boardSize - 1, y: i)));
+      walls.add(WallEntity(Coordinates(x: i, y: boardSize - 1)));
       walls.add(WallEntity(Coordinates(x: 0, y: i)));
       walls.add(WallEntity(Coordinates(x: i, y: 0)));
     }
     this.entities.addAll(walls);
   }
 
-  void _initRandomWalls(int nbWalls) {
+  void _initRandomWalls(int nbWalls, int boardSize) {
     for (var i = 0; i < nbWalls; i++) {
-      final randomCoordinates = InitSystem.getRandomCoordinates(this.entities);
+      final randomCoordinates =
+          InitSystem.getRandomCoordinates(boardSize, this.entities);
       this.entities.add(WallEntity(randomCoordinates));
     }
   }
 
-  void _initRandomPortals(int nbPortals) {
+  void _initRandomPortals(int nbPortals, int boardSize) {
     for (var i = 0; i < nbPortals; i++) {
-      final randomLeadPosition = InitSystem.getRandomCoordinates(this.entities);
-      final randomExitPosition =
-          InitSystem.getRandomCoordinates(this.entities, [randomLeadPosition]);
+      final randomLeadPosition =
+          InitSystem.getRandomCoordinates(boardSize, this.entities);
+      final randomExitPosition = InitSystem.getRandomCoordinates(
+          boardSize, this.entities, [randomLeadPosition]);
       this.entities.add(PortalEntity(randomLeadPosition, randomExitPosition));
     }
   }
@@ -117,7 +118,7 @@ class InitSystem extends System {
 
   /// TODO: improve this function so that it does not use recursion to find
   /// available random coordinates
-  static getRandomCoordinates(List<Entity> entities,
+  static getRandomCoordinates(int boardSize, List<Entity> entities,
       [List<Coordinates> unreferencedUnavailablePositions]) {
     final List<Coordinates> unavailableBodyPositions = entities
         .where((entity) => entity is BodyComponent)
@@ -132,16 +133,16 @@ class InitSystem extends System {
           ..addAll(unavailableBodyPositions)
           ..addAll(unreferencedUnavailablePositions ?? []);
 
-    return _getAvailableCoordinates(unavailablePositions.toList());
+    return _getAvailableCoordinates(unavailablePositions.toList(), boardSize);
   }
 
   static Coordinates _getAvailableCoordinates(
-      List<Coordinates> unavailablePositions) {
+      List<Coordinates> unavailablePositions, int boardSize) {
     final randomCoordinates = Coordinates(
-        x: Random().nextInt(BOARD_SIZE - 2) + 1,
-        y: Random().nextInt(BOARD_SIZE - 2) + 1);
+        x: Random().nextInt(boardSize - 2) + 1,
+        y: Random().nextInt(boardSize - 2) + 1);
     if (unavailablePositions.contains(randomCoordinates)) {
-      return _getAvailableCoordinates(unavailablePositions);
+      return _getAvailableCoordinates(unavailablePositions, boardSize);
     }
     return randomCoordinates;
   }

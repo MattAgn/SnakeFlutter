@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snake_game/ecs/systems/init.dart';
 import 'package:snake_game/ecs/systems/main.dart';
 
 class GameBoard extends StatelessWidget {
@@ -20,8 +19,10 @@ class GameBoard extends StatelessWidget {
         : MediaQuery.of(context).size.height * 0.5;
     final boardPixelSize =
         min(minimumHeight, MediaQuery.of(context).size.width);
-    final boardSquareSize = boardPixelSize / BOARD_SIZE;
-
+    print("coucou");
+    final boardSquareSize =
+        boardPixelSize / gameSystem?.optionsSystem?.boardSize;
+    print(boardSquareSize);
     return SizedBox(
       height: boardPixelSize,
       width: boardPixelSize,

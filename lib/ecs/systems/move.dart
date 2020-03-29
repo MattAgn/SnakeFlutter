@@ -1,5 +1,6 @@
 import 'package:snake_game/ecs/entities/snake.dart';
 import 'package:snake_game/ecs/entities/portal.dart';
+import 'package:snake_game/ecs/systems/options.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/components/position.dart';
@@ -7,7 +8,7 @@ import 'package:snake_game/ecs/components/exit_position.dart';
 
 class MoveSystem extends System {
   @override
-  handleEntities(entities) {
+  handleEntities(entities, [OptionsSystem options]) {
     final movableEntities = this.getEntitiesByComponents<MovableComponent,
         LeadPositionComponent, SnakeEntity>(entities);
     final portals = this.getEntitiesByComponents<ExitPositionComponent,

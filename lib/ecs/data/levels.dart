@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/portal.dart';
-import 'package:snake_game/ecs/systems/init.dart';
 
 class LevelOptions {
   final Type surroundingBoardEntityType;
@@ -23,78 +22,60 @@ class LevelOptions {
 final levelsOptions = {
   0: LevelOptions(minWinningScore: 30),
   1: LevelOptions(minWinningScore: 30, wallsCoordinates: [
-    Coordinates(x: (BOARD_SIZE / 2).floor() - 7, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() - 6, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() - 5, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() - 4, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() - 3, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() - 2, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() - 1, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor(), y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() + 7, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() + 6, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() + 5, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() + 4, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() + 3, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() + 2, y: (BOARD_SIZE / 2).floor()),
-    Coordinates(x: (BOARD_SIZE / 2).floor() + 1, y: (BOARD_SIZE / 2).floor()),
+    Coordinates(x: (25 / 2).floor() - 7, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() - 6, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() - 5, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() - 4, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() - 3, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() - 2, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() - 1, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor(), y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() + 7, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() + 6, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() + 5, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() + 4, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() + 3, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() + 2, y: (25 / 2).floor()),
+    Coordinates(x: (25 / 2).floor() + 1, y: (25 / 2).floor()),
   ]),
   2: LevelOptions(minWinningScore: 30, wallsCoordinates: [
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 9, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 8, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 6, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 7, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 5, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 4, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 3, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 2, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() - 1, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor(), x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 9, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 8, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 7, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 6, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 5, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 4, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 3, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 2, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor() + 1, x: (BOARD_SIZE / 3).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 9, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 8, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 6, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 7, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 5, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 4, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 3, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 2, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() - 1, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(y: (BOARD_SIZE / 2).floor(), x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 9, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 8, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 7, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 6, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 5, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 4, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 3, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 2, x: (BOARD_SIZE / 3 * 2).floor()),
-    Coordinates(
-        y: (BOARD_SIZE / 2).floor() + 1, x: (BOARD_SIZE / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 9, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 8, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 6, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 7, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 5, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 4, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 3, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 2, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 1, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor(), x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 9, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 8, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 7, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 6, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 5, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 4, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 3, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 2, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() + 1, x: (25 / 3).floor()),
+    Coordinates(y: (25 / 2).floor() - 9, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 8, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 6, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 7, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 5, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 4, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 3, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 2, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() - 1, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor(), x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 9, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 8, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 7, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 6, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 5, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 4, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 3, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 2, x: (25 / 3 * 2).floor()),
+    Coordinates(y: (25 / 2).floor() + 1, x: (25 / 3 * 2).floor()),
   ]),
 };
