@@ -4,15 +4,26 @@ import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class OptionsSystem extends System {
+  static int minBoardSize = 10;
+  static int maxBoardSize = 40;
+  static double minGameSpeed = 1 / 300;
+  static double maxGameSpeed = 1 / 10;
+  static double minGameSpeedDisplayed = 1;
+  static double maxGameSpeedDisplayed = maxGameSpeed * 300;
+  static int minNbRandomWalls = 0;
+  static int maxNbRandomWalls = 20;
+  static int minNbRandomPortals = 0;
+  static int maxNbRandomPortals = 20;
+
   Function notifyGameListeners;
   List<Coordinates> wallsCoordinates = [];
   int minWinningScore;
   int _nbRandomWalls = 0;
   int _nbRandomPortals = 0;
-  int _boardSize = 10;
+  int _boardSize = 20;
 
   /// inverse of the time in milliseconds between 2 iterations of the game loop
-  double _gameSpeed = 1 / 100;
+  double gameSpeed = 1 / 100;
 
   /// default = [portalEntity:true, wallEntity: false]
   List<bool> surroundingBoardEntityTypesSelected = [true, false];
@@ -57,8 +68,8 @@ class OptionsSystem extends System {
     notifyGameListeners();
   }
 
-  set gameSpeed(double gameSpeed) {
-    _gameSpeed = gameSpeed;
+  set gameSpeedDisplayed(double gameSpeedInput) {
+    gameSpeed = gameSpeedInput / 300;
     notifyGameListeners();
   }
 
@@ -66,7 +77,7 @@ class OptionsSystem extends System {
 
   int get nbRandomPortals => _nbRandomPortals;
 
-  double get gameSpeed => _gameSpeed;
-
   int get boardSize => _boardSize;
+
+  double get gameSpeedDisplayed => (gameSpeed * 300).roundToDouble();
 }

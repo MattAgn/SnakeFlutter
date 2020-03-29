@@ -44,8 +44,8 @@ class Options extends StatelessWidget {
                   SizedBox(height: 5),
                   Slider(
                     value: optionsSystem.nbRandomWalls.toDouble(),
-                    max: 20,
-                    min: 0,
+                    max: OptionsSystem.maxNbRandomWalls.toDouble(),
+                    min: OptionsSystem.minNbRandomWalls.toDouble(),
                     onChanged: (value) =>
                         optionsSystem.nbRandomWalls = value.toInt(),
                   ),
@@ -59,8 +59,8 @@ class Options extends StatelessWidget {
                   SizedBox(height: 5),
                   Slider(
                     value: optionsSystem.nbRandomPortals.toDouble(),
-                    max: 20,
-                    min: 0,
+                    max: OptionsSystem.maxNbRandomPortals.toDouble(),
+                    min: OptionsSystem.minNbRandomPortals.toDouble(),
                     onChanged: (value) =>
                         optionsSystem.nbRandomPortals = value.toInt(),
                   ),
@@ -69,13 +69,14 @@ class Options extends StatelessWidget {
               SizedBox(height: 60),
               Column(
                 children: <Widget>[
-                  Text("Game Speed: ${optionsSystem.gameSpeed}"),
+                  Text("Game Speed: ${optionsSystem.gameSpeedDisplayed}"),
                   SizedBox(height: 5),
                   Slider(
-                    value: optionsSystem.gameSpeed.toDouble(),
-                    max: 1 / 10,
-                    min: 1 / 200,
-                    onChanged: (value) => optionsSystem.gameSpeed = value,
+                    value: optionsSystem.gameSpeedDisplayed,
+                    max: OptionsSystem.maxGameSpeedDisplayed,
+                    min: OptionsSystem.minGameSpeedDisplayed,
+                    onChanged: (value) =>
+                        optionsSystem.gameSpeedDisplayed = value,
                   ),
                 ],
               ),
@@ -86,8 +87,8 @@ class Options extends StatelessWidget {
                   SizedBox(height: 5),
                   Slider(
                     value: optionsSystem.boardSize.toDouble(),
-                    max: 50,
-                    min: 10,
+                    max: OptionsSystem.maxBoardSize.toDouble(),
+                    min: OptionsSystem.minBoardSize.toDouble(),
                     onChanged: (value) =>
                         optionsSystem.boardSize = value.toInt(),
                   ),
