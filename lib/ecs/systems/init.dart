@@ -17,7 +17,7 @@ import 'package:snake_game/ecs/systems/system.dart';
 class InitSystem extends System {
   static final initialSnakePosition = Coordinates(x: 2, y: 2);
   static final initialSnakeSpeed = Speed(dx: 1, dy: 0);
-  static final initialApplePosition = Coordinates(x: 10, y: 2);
+  static final initialApplePosition = Coordinates(x: 4, y: 2);
   List<Entity> entities = [];
 
   initEntities(OptionsSystem optionsSystem) {
