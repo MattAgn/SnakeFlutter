@@ -129,14 +129,16 @@ class GameSystem extends System {
 
   set levelNumber(int levelNumber) {
     LevelOptions levelOptions = levelsOptions[levelNumber];
-    optionsSystem
-      ..boardSize = levelOptions.boardSize
-      ..gameSpeed = levelOptions.gameSpeed
-      ..wallsCoordinates = levelOptions.wallsCoordinates
-      ..minWinningScore = levelOptions.minWinningScore
-      ..surroundingBoardEntityType = levelOptions.surroundingBoardEntityType
-      ..nbRandomPortals = levelOptions.nbRandomPortals
-      ..nbRandomWalls = levelOptions.nbRandomWalls;
+    if (levelOptions != null) {
+      optionsSystem
+        ..boardSize = levelOptions.boardSize
+        ..gameSpeed = levelOptions.gameSpeed
+        ..wallsCoordinates = levelOptions.wallsCoordinates
+        ..minWinningScore = levelOptions.minWinningScore
+        ..surroundingBoardEntityType = levelOptions.surroundingBoardEntityType
+        ..nbRandomPortals = levelOptions.nbRandomPortals
+        ..nbRandomWalls = levelOptions.nbRandomWalls;
+    }
     _levelNumber = levelNumber;
   }
 

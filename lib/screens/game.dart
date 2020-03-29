@@ -31,7 +31,9 @@ class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameSystem = Provider.of<GameSystem>(context);
-    gameSystem.levelNumber = levelNumber;
+    if (levelNumber != null) {
+      gameSystem.levelNumber = levelNumber;
+    }
     // TODO: put below code at the initialization of the widget
     if (gameSystem.entities == null) {
       Future.delayed(const Duration(milliseconds: 500), () {
