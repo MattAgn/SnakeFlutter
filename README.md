@@ -1,16 +1,28 @@
 # snake_game
 
-A new Flutter project.
+A mobile and web snake game built with Flutter
 
-## Getting Started
+## Deployment
 
-This project is a starting point for a Flutter application.
+### Web
 
-A few resources to get you started if this is your first Flutter project:
+To deploy on the web, you need the [firebase cli](https://firebaseopensource.com/projects/firebase/firebase-tools/) and be logged in to firebase account.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+To build and deploy the flutter web app, run:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter build web && firebase deploy
+```
+
+### Android
+
+Run at the root of the project:
+```bash
+cd android
+bundle exec fastlane android_beta_app
+```
+
+
+### iOS
+
+Not working yet because we need provisionning profiles
