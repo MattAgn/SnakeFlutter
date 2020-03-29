@@ -19,10 +19,8 @@ class GameBoard extends StatelessWidget {
         : MediaQuery.of(context).size.height * 0.5;
     final boardPixelSize =
         min(minimumHeight, MediaQuery.of(context).size.width);
-    print("coucou");
     final boardSquareSize =
         boardPixelSize / gameSystem?.optionsSystem?.boardSize;
-    print(boardSquareSize);
     return SizedBox(
       height: boardPixelSize,
       width: boardPixelSize,

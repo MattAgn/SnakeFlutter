@@ -20,7 +20,6 @@ class KeyboardControls extends StatelessWidget {
     final gameSystem = Provider.of<GameSystem>(context, listen: false);
 
     return (RawKeyEvent value) {
-      print(value);
       if (value is RawKeyDownEvent) {
         switch (value.data.logicalKey.keyId) {
           case ARROW_UP_KEY_ID:
