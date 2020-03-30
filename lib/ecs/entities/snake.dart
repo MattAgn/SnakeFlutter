@@ -107,6 +107,7 @@ class SnakeEntity extends Entity
               origin: bodyPartPosition,
               boardSquareSize: boardSquareSize,
               angle: bodyAngle,
+              scale: 1.05,
               child: FlareActor('assets/rive/$bodyAsset.flr'),
             ),
           );
