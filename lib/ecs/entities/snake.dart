@@ -36,82 +36,84 @@ class SnakeEntity extends Entity
             bodyPartNumber == 0 ? leadPosition : body[bodyPartNumber - 1];
         final nextBodyPartPosition =
             bodyPartNumber == body.length - 1 ? null : body[bodyPartNumber + 1];
+        String bodyAsset;
+        double bodyAngle = 0;
 
         if (nextBodyPartPosition == null) {
-          snakeElements.add(
-            PositionedOnBoard(
-              key: Key('snake_body_$bodyPartNumber'),
-              origin: bodyPartPosition,
-              boardSquareSize: boardSquareSize,
-              child: Container(color: Colors.green),
-            ),
-          );
-        } else {
-          String bodyAsset;
-          double bodyAngle = 0;
-          if (bodyPartPosition.x == previousBodyPartPosition.x &&
-              bodyPartPosition.x == nextBodyPartPosition.x) {
+          bodyAsset = 'snake_body_tail';
+          if (bodyPartPosition.x == previousBodyPartPosition.x) {
             // x
             // x
-            // x
-            bodyAsset = 'snake_body_straight';
-            bodyAngle = 0;
-          } else if (bodyPartPosition.y == previousBodyPartPosition.y &&
-              bodyPartPosition.y == nextBodyPartPosition.y) {
-            // x x x
-            bodyAsset = 'snake_body_straight';
-            bodyAngle = pi / 2;
-          } else {
-            bodyAsset = 'snake_body_curve';
-            if (previousBodyPartPosition.x == bodyPartPosition.x &&
-                    previousBodyPartPosition.y > bodyPartPosition.y &&
-                    nextBodyPartPosition.x < bodyPartPosition.x ||
-                previousBodyPartPosition.y == bodyPartPosition.y &&
-                    previousBodyPartPosition.x < bodyPartPosition.x &&
-                    nextBodyPartPosition.y > bodyPartPosition.y) {
-              // x x
-              //   x
-              bodyAngle = 0;
-            } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
-                    previousBodyPartPosition.y < bodyPartPosition.y &&
-                    nextBodyPartPosition.x > bodyPartPosition.x ||
-                previousBodyPartPosition.y == bodyPartPosition.y &&
-                    previousBodyPartPosition.x > bodyPartPosition.x &&
-                    nextBodyPartPosition.y < bodyPartPosition.y) {
-              // x
-              // x x
-              bodyAngle = pi;
-            } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
-                    previousBodyPartPosition.y > bodyPartPosition.y &&
-                    nextBodyPartPosition.x > bodyPartPosition.x ||
-                previousBodyPartPosition.y == bodyPartPosition.y &&
-                    previousBodyPartPosition.x > bodyPartPosition.x &&
-                    nextBodyPartPosition.y > bodyPartPosition.y) {
-              // x x
-              // x
-              bodyAngle = -pi / 2;
-            } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
-                    previousBodyPartPosition.y < bodyPartPosition.y &&
-                    nextBodyPartPosition.x < bodyPartPosition.x ||
-                previousBodyPartPosition.y == bodyPartPosition.y &&
-                    previousBodyPartPosition.x < bodyPartPosition.x &&
-                    nextBodyPartPosition.y < bodyPartPosition.y) {
-              //   x
-              // x x
-              bodyAngle = pi / 2;
-            }
+            bodyAngle =
+                bodyPartPosition.y < previousBodyPartPosition.y ? 0 : pi;
+          } else if (bodyPartPosition.y == previousBodyPartPosition.y) {
+            // x x
+            bodyAngle = bodyPartPosition.x < previousBodyPartPosition.x
+                ? -pi / 2
+                : pi / 2;
           }
-          snakeElements.add(
-            PositionedOnBoard(
-              key: Key('snake_body_$bodyPartNumber'),
-              origin: bodyPartPosition,
-              boardSquareSize: boardSquareSize,
-              angle: bodyAngle,
-              scale: 1.05,
-              child: FlareActor('assets/rive/$bodyAsset.flr'),
-            ),
-          );
+        } else if (bodyPartPosition.x == previousBodyPartPosition.x &&
+            bodyPartPosition.x == nextBodyPartPosition.x) {
+          // x
+          // x
+          // x
+          bodyAsset = 'snake_body_straight';
+          bodyAngle = 0;
+        } else if (bodyPartPosition.y == previousBodyPartPosition.y &&
+            bodyPartPosition.y == nextBodyPartPosition.y) {
+          // x x x
+          bodyAsset = 'snake_body_straight';
+          bodyAngle = pi / 2;
+        } else {
+          bodyAsset = 'snake_body_curve';
+          if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                  previousBodyPartPosition.y > bodyPartPosition.y &&
+                  nextBodyPartPosition.x < bodyPartPosition.x ||
+              previousBodyPartPosition.y == bodyPartPosition.y &&
+                  previousBodyPartPosition.x < bodyPartPosition.x &&
+                  nextBodyPartPosition.y > bodyPartPosition.y) {
+            // x x
+            //   x
+            bodyAngle = 0;
+          } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                  previousBodyPartPosition.y < bodyPartPosition.y &&
+                  nextBodyPartPosition.x > bodyPartPosition.x ||
+              previousBodyPartPosition.y == bodyPartPosition.y &&
+                  previousBodyPartPosition.x > bodyPartPosition.x &&
+                  nextBodyPartPosition.y < bodyPartPosition.y) {
+            // x
+            // x x
+            bodyAngle = pi;
+          } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                  previousBodyPartPosition.y > bodyPartPosition.y &&
+                  nextBodyPartPosition.x > bodyPartPosition.x ||
+              previousBodyPartPosition.y == bodyPartPosition.y &&
+                  previousBodyPartPosition.x > bodyPartPosition.x &&
+                  nextBodyPartPosition.y > bodyPartPosition.y) {
+            // x x
+            // x
+            bodyAngle = -pi / 2;
+          } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                  previousBodyPartPosition.y < bodyPartPosition.y &&
+                  nextBodyPartPosition.x < bodyPartPosition.x ||
+              previousBodyPartPosition.y == bodyPartPosition.y &&
+                  previousBodyPartPosition.x < bodyPartPosition.x &&
+                  nextBodyPartPosition.y < bodyPartPosition.y) {
+            //   x
+            // x x
+            bodyAngle = pi / 2;
+          }
         }
+        snakeElements.add(
+          PositionedOnBoard(
+            key: Key('snake_body_$bodyPartNumber'),
+            origin: bodyPartPosition,
+            boardSquareSize: boardSquareSize,
+            angle: bodyAngle,
+            scale: 1.05,
+            child: FlareActor('assets/rive/$bodyAsset.flr'),
+          ),
+        );
       }
 
       // head
