@@ -27,20 +27,93 @@ class SnakeEntity extends Entity
     this.paint = (double boardSquareSize) {
       final List<PositionedOnBoard> snakeElements = [];
 
+      // body
       for (int bodyPartNumber = 0;
           bodyPartNumber < body.length;
           bodyPartNumber++) {
         final bodyPartPosition = body[bodyPartNumber];
-        snakeElements.add(
-          PositionedOnBoard(
-            key: Key('snake_body_$bodyPartNumber'),
-            origin: bodyPartPosition,
-            boardSquareSize: boardSquareSize,
-            child: Container(color: Colors.green),
-          ),
-        );
+        final previousBodyPartPosition =
+            bodyPartNumber == 0 ? leadPosition : body[bodyPartNumber - 1];
+        final nextBodyPartPosition =
+            bodyPartNumber == body.length - 1 ? null : body[bodyPartNumber + 1];
+
+        if (nextBodyPartPosition == null) {
+          snakeElements.add(
+            PositionedOnBoard(
+              key: Key('snake_body_$bodyPartNumber'),
+              origin: bodyPartPosition,
+              boardSquareSize: boardSquareSize,
+              child: Container(color: Colors.green),
+            ),
+          );
+        } else {
+          String bodyAsset;
+          double bodyAngle = 0;
+          if (bodyPartPosition.x == previousBodyPartPosition.x &&
+              bodyPartPosition.x == nextBodyPartPosition.x) {
+            // x
+            // x
+            // x
+            bodyAsset = 'snake_body_straight';
+            bodyAngle = 0;
+          } else if (bodyPartPosition.y == previousBodyPartPosition.y &&
+              bodyPartPosition.y == nextBodyPartPosition.y) {
+            // x x x
+            bodyAsset = 'snake_body_straight';
+            bodyAngle = pi / 2;
+          } else {
+            bodyAsset = 'snake_body_curve';
+            if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                    previousBodyPartPosition.y > bodyPartPosition.y &&
+                    nextBodyPartPosition.x < bodyPartPosition.x ||
+                previousBodyPartPosition.y == bodyPartPosition.y &&
+                    previousBodyPartPosition.x < bodyPartPosition.x &&
+                    nextBodyPartPosition.y > bodyPartPosition.y) {
+              // x x
+              //   x
+              bodyAngle = 0;
+            } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                    previousBodyPartPosition.y < bodyPartPosition.y &&
+                    nextBodyPartPosition.x > bodyPartPosition.x ||
+                previousBodyPartPosition.y == bodyPartPosition.y &&
+                    previousBodyPartPosition.x > bodyPartPosition.x &&
+                    nextBodyPartPosition.y < bodyPartPosition.y) {
+              // x
+              // x x
+              bodyAngle = pi;
+            } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                    previousBodyPartPosition.y > bodyPartPosition.y &&
+                    nextBodyPartPosition.x > bodyPartPosition.x ||
+                previousBodyPartPosition.y == bodyPartPosition.y &&
+                    previousBodyPartPosition.x > bodyPartPosition.x &&
+                    nextBodyPartPosition.y > bodyPartPosition.y) {
+              // x x
+              // x
+              bodyAngle = -pi / 2;
+            } else if (previousBodyPartPosition.x == bodyPartPosition.x &&
+                    previousBodyPartPosition.y < bodyPartPosition.y &&
+                    nextBodyPartPosition.x < bodyPartPosition.x ||
+                previousBodyPartPosition.y == bodyPartPosition.y &&
+                    previousBodyPartPosition.x < bodyPartPosition.x &&
+                    nextBodyPartPosition.y < bodyPartPosition.y) {
+              //   x
+              // x x
+              bodyAngle = pi / 2;
+            }
+          }
+          snakeElements.add(
+            PositionedOnBoard(
+              key: Key('snake_body_$bodyPartNumber'),
+              origin: bodyPartPosition,
+              boardSquareSize: boardSquareSize,
+              angle: bodyAngle,
+              child: FlareActor('assets/rive/$bodyAsset.flr'),
+            ),
+          );
+        }
       }
 
+      // head
       snakeElements.add(
         PositionedOnBoard(
           key: Key('snake_head'),
