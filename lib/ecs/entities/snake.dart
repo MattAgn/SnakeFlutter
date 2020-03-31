@@ -26,10 +26,12 @@ class SnakeEntity extends Entity
 
     this.paint = (double boardSquareSize) {
       final paintedSnakeHead = _paintHead(boardSquareSize);
-      final paintedSnakeTail = _paintTail(boardSquareSize);
-      final paintedSnakeBody = _paintBody(boardSquareSize);
-
-      return [...paintedSnakeBody, paintedSnakeTail, paintedSnakeHead];
+      if (body.isNotEmpty) {
+        final paintedSnakeTail = _paintTail(boardSquareSize);
+        final paintedSnakeBody = _paintBody(boardSquareSize);
+        return [...paintedSnakeBody, paintedSnakeTail, paintedSnakeHead];
+      }
+      return [paintedSnakeHead];
     };
   }
 
