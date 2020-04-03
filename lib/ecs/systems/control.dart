@@ -3,11 +3,12 @@ import 'package:snake_game/ecs/components/controller.dart';
 import 'package:snake_game/ecs/components/movable.dart';
 import 'package:snake_game/ecs/entities/controls.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
+import 'package:snake_game/ecs/systems/options.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class ControlSystem extends System {
   @override
-  handleEntities(entities) {
+  handleEntities(entities, [OptionsSystem options]) {
     final controllerEntities = this
         .getEntitiesByComponent<ControllerComponent, ControlsEntity>(entities);
     final controllableEntities = this.getEntitiesByComponents<

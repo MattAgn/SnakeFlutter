@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
+import 'package:snake_game/ecs/systems/options.dart';
 
 class System extends ChangeNotifier {
   List<EntityType> getEntitiesByComponent<ComponentType, EntityType>(
@@ -19,5 +20,5 @@ class System extends ChangeNotifier {
         .toList();
   }
 
-  void handleEntities(List<Entity> entities) {}
+  void handleEntities(List<Entity> entities, [OptionsSystem options]) {}
 }

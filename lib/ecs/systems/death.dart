@@ -5,6 +5,7 @@ import 'package:snake_game/ecs/components/not_eatable.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
 import 'package:snake_game/ecs/entities/snake.dart';
+import 'package:snake_game/ecs/systems/options.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class DeathSystem extends System {
@@ -21,7 +22,7 @@ class DeathSystem extends System {
   }
 
   @override
-  handleEntities(entities) {
+  handleEntities(entities, [OptionsSystem options]) {
     final notEatableEntities = this.getEntitiesByComponents<NotEatableComponent,
         LeadPositionComponent, dynamic>(entities);
     final eaterEntities = this.getEntitiesByComponents<EaterComponent,

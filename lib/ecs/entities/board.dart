@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/components/renderable.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
-import 'package:snake_game/ecs/systems/init.dart';
 
 class BoardEntity extends Entity with RenderableComponent {
-  BoardEntity() {
+  BoardEntity(int boardSize) {
     this.paint = (double boardSquareSize) {
       final List<PositionedOnBoard> gridElements = [];
 
-      for (int row = 0; row < BOARD_SIZE; row++) {
-        for (int column = 0; column < BOARD_SIZE; column++) {
+      for (int row = 0; row < boardSize; row++) {
+        for (int column = 0; column < boardSize; column++) {
           Color color;
           if (row % 2 == 0) {
             if (column % 2 == 0) {

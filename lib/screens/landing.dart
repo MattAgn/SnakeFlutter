@@ -7,12 +7,6 @@ class Landing extends StatelessWidget {
     };
   }
 
-  onPressOptions(context) {
-    return () {
-      Navigator.pushNamed(context, "/options");
-    };
-  }
-
   onPressLogin(context) {
     return () {
       Navigator.pushNamed(context, "/login");
@@ -51,18 +45,6 @@ class Landing extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: onPlay(context),
-                  padding: EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
-                ),
-                SizedBox(height: 20),
-                RaisedButton(
-                  child: Text(
-                    "Options",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: onPressOptions(context),
                   padding: EdgeInsets.all(10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(50)),

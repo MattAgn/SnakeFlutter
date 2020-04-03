@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/systems/main.dart';
+import 'package:snake_game/screens/options_dialog.dart';
 import 'package:snake_game/widgets/arrow_controls.dart';
 import 'package:snake_game/widgets/game_board.dart';
 import 'package:snake_game/widgets/keyboard_controls.dart';
@@ -11,6 +12,14 @@ class Game extends StatelessWidget {
   final int levelNumber;
 
   Game({this.levelNumber});
+
+  Future<void> _showOptionsDialog(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return OptionsDialog();
+        });
+  }
 
   _renderWebGame() {
     return KeyboardControls(
@@ -31,7 +40,9 @@ class Game extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameSystem = Provider.of<GameSystem>(context);
-    gameSystem.levelNumber = levelNumber;
+    if (levelNumber != null) {
+      gameSystem.levelNumber = levelNumber;
+    }
     // TODO: put below code at the initialization of the widget
     if (gameSystem.entities == null) {
       Future.delayed(const Duration(milliseconds: 500), () {
@@ -47,7 +58,7 @@ class Game extends StatelessWidget {
             ? <Widget>[
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/options");
+                    _showOptionsDialog(context);
                     gameSystem.pause();
                   },
                   icon: Icon(Icons.settings),

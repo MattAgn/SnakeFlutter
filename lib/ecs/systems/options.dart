@@ -1,11 +1,29 @@
+import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/entities/portal.dart';
 import 'package:snake_game/ecs/entities/wall.dart';
 import 'package:snake_game/ecs/systems/system.dart';
 
 class OptionsSystem extends System {
+  static int minBoardSize = 10;
+  static int maxBoardSize = 40;
+  static double minGameSpeed = 1 / 300;
+  static double maxGameSpeed = 1 / 10;
+  static double minGameSpeedDisplayed = 1;
+  static double maxGameSpeedDisplayed = maxGameSpeed * 300;
+  static int minNbRandomWalls = 0;
+  static int maxNbRandomWalls = 20;
+  static int minNbRandomPortals = 0;
+  static int maxNbRandomPortals = 20;
+
+  Function notifyGameListeners;
+  List<Coordinates> wallsCoordinates = [];
+  int minWinningScore;
   int _nbRandomWalls = 0;
   int _nbRandomPortals = 0;
-  Function notifyGameListeners;
+  int _boardSize = 20;
+
+  /// inverse of the time in milliseconds between 2 iterations of the game loop
+  double gameSpeed = 1 / 100;
 
   /// default = [portalEntity:true, wallEntity: false]
   List<bool> surroundingBoardEntityTypesSelected = [true, false];
@@ -25,7 +43,14 @@ class OptionsSystem extends System {
     this.notifyGameListeners();
   }
 
-  get surroundingBoardEntityType =>
+  set surroundingBoardEntityType(Type surroundingBoardEntityType) {
+    surroundingBoardEntityTypesSelected =
+        surroundingBoardEntityType == PortalEntity
+            ? [true, false]
+            : [false, true];
+  }
+
+  Type get surroundingBoardEntityType =>
       surroundingBoardEntityTypesSelected[0] ? PortalEntity : WallEntity;
 
   set nbRandomWalls(int nbRandomWalls) {
@@ -38,7 +63,21 @@ class OptionsSystem extends System {
     notifyGameListeners();
   }
 
-  get nbRandomWalls => _nbRandomWalls;
+  set boardSize(int boardSize) {
+    _boardSize = boardSize;
+    notifyGameListeners();
+  }
 
-  get nbRandomPortals => _nbRandomPortals;
+  set gameSpeedDisplayed(double gameSpeedInput) {
+    gameSpeed = gameSpeedInput / 300;
+    notifyGameListeners();
+  }
+
+  int get nbRandomWalls => _nbRandomWalls;
+
+  int get nbRandomPortals => _nbRandomPortals;
+
+  int get boardSize => _boardSize;
+
+  double get gameSpeedDisplayed => (gameSpeed * 300).roundToDouble();
 }
