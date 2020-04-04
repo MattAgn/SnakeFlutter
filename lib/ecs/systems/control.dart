@@ -16,8 +16,9 @@ class ControlSystem extends System {
 
     controllerEntities.forEach((controllerEntity) {
       controllableEntities.forEach((controllableEntity) {
+        final currentDirection = controllerEntity.getDirectionToApply();
         controllableEntity.speed =
-            this._updateSpeedFromDirection(controllerEntity.direction);
+            this._updateSpeedFromDirection(currentDirection);
       });
     });
   }
