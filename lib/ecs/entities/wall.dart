@@ -7,7 +7,6 @@ import 'package:snake_game/ecs/components/not_eatable.dart';
 import 'package:snake_game/ecs/components/position.dart';
 import 'package:snake_game/ecs/components/renderable.dart';
 import 'package:snake_game/ecs/entities/entity.dart';
-import 'package:snake_game/ecs/systems/init.dart';
 
 class WallEntity extends Entity
     with NotEatableComponent, LeadPositionComponent, RenderableComponent {
@@ -19,13 +18,6 @@ class WallEntity extends Entity
 
     paint = (double boardSquareSize) {
       double wallRotation = 0;
-      if (leadPosition.x == 0 || leadPosition.x == BOARD_SIZE - 1) {
-        if (leadPosition.y == 0 || leadPosition.y == BOARD_SIZE - 1) {
-          wallRotation = leadPosition.x != leadPosition.y ? pi / 4 : -pi / 4;
-        } else {
-          wallRotation = pi / 2;
-        }
-      }
       return [
         PositionedOnBoard(
           key: Key('wall_$wallNumber'),
