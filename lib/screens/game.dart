@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snake_game/ecs/systems/main.dart';
-import 'package:snake_game/screens/options_dialog.dart';
+import 'package:snake_game/widgets/options_dialog.dart';
 import 'package:snake_game/widgets/arrow_controls.dart';
 import 'package:snake_game/widgets/game_board.dart';
 import 'package:snake_game/widgets/keyboard_controls.dart';

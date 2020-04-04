@@ -25,58 +25,63 @@ class Landing extends StatelessWidget {
       child: Container(
         color: Colors.black,
         padding: EdgeInsets.all(50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Text(
-              "Snake",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.green),
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
+        child: Center(
+          child: SizedBox(
+            width: 600,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                RaisedButton(
-                  child: Text(
-                    "Play",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: onPlay(context),
-                  padding: EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
+                Text(
+                  "Snake",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.green),
                 ),
-                SizedBox(height: 20),
-                RaisedButton(
-                  child: Text(
-                    "Levels",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: onPressLevels(context),
-                  padding: EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text(
+                        "Play",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: onPlay(context),
+                      padding: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    RaisedButton(
+                      child: Text(
+                        "Levels",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: onPressLevels(context),
+                      padding: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    RaisedButton(
+                      child: Text(
+                        "Login",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      onPressed: onPressLogin(context),
+                      padding: EdgeInsets.all(10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                      ),
+                    )
+                  ],
                 ),
-                SizedBox(height: 20),
-                RaisedButton(
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: onPressLogin(context),
-                  padding: EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
-                )
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

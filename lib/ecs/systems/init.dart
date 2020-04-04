@@ -29,7 +29,8 @@ class InitSystem extends System {
     // are generated based on the previous coordinates
     // while snake, apple and boardSurroundings have fixed coordinates
     _initSnake();
-    _initPredefinedWalls(optionsSystem.wallsCoordinates);
+    _initPredefinedWalls(
+        optionsSystem.wallsCoordinates, optionsSystem.boardSize);
     _initApple();
     _initBoardSurroundings(
         optionsSystem.surroundingBoardEntityType, optionsSystem.boardSize);
@@ -60,13 +61,13 @@ class InitSystem extends System {
     final List<PortalEntity> portals = [];
     for (var i = 0; i < boardSize; i++) {
       portals.add(PortalEntity(
-          Coordinates(x: boardSize, y: i), Coordinates(x: -1, y: i)));
+          Coordinates(x: boardSize, y: i), Coordinates(x: 0, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: boardSize), Coordinates(x: i, y: -1)));
+          Coordinates(x: i, y: boardSize), Coordinates(x: i, y: 0)));
       portals.add(PortalEntity(
-          Coordinates(x: -1, y: i), Coordinates(x: boardSize, y: i)));
+          Coordinates(x: -1, y: i), Coordinates(x: boardSize - 1, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: -1), Coordinates(x: i, y: boardSize)));
+          Coordinates(x: i, y: -1), Coordinates(x: i, y: boardSize - 1)));
     }
     this.entities.addAll(portals);
   }
@@ -74,10 +75,10 @@ class InitSystem extends System {
   void _initBoardSurroundingWalls(int boardSize) {
     final List<WallEntity> walls = [];
     for (var i = 0; i < boardSize; i++) {
-      walls.add(WallEntity(Coordinates(x: boardSize - 1, y: i)));
-      walls.add(WallEntity(Coordinates(x: i, y: boardSize - 1)));
-      walls.add(WallEntity(Coordinates(x: 0, y: i)));
-      walls.add(WallEntity(Coordinates(x: i, y: 0)));
+      walls.add(WallEntity(Coordinates(x: boardSize - 1, y: i), boardSize));
+      walls.add(WallEntity(Coordinates(x: i, y: boardSize - 1), boardSize));
+      walls.add(WallEntity(Coordinates(x: 0, y: i), boardSize));
+      walls.add(WallEntity(Coordinates(x: i, y: 0), boardSize));
     }
     this.entities.addAll(walls);
   }
@@ -86,7 +87,7 @@ class InitSystem extends System {
     for (var i = 0; i < nbWalls; i++) {
       final randomCoordinates =
           InitSystem.getRandomCoordinates(boardSize, this.entities);
-      this.entities.add(WallEntity(randomCoordinates));
+      this.entities.add(WallEntity(randomCoordinates, boardSize));
     }
   }
 
@@ -100,9 +101,10 @@ class InitSystem extends System {
     }
   }
 
-  void _initPredefinedWalls(List<Coordinates> predefinedWallsCoordinates) {
+  void _initPredefinedWalls(
+      List<Coordinates> predefinedWallsCoordinates, int boardSize) {
     for (final wallCoordinates in predefinedWallsCoordinates) {
-      this.entities.add(WallEntity(wallCoordinates));
+      this.entities.add(WallEntity(wallCoordinates, boardSize));
     }
   }
 
