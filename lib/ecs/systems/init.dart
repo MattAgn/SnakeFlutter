@@ -61,13 +61,13 @@ class InitSystem extends System {
     final List<PortalEntity> portals = [];
     for (var i = 0; i < boardSize; i++) {
       portals.add(PortalEntity(
-          Coordinates(x: boardSize, y: i), Coordinates(x: -1, y: i)));
+          Coordinates(x: boardSize, y: i), Coordinates(x: 0, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: boardSize), Coordinates(x: i, y: -1)));
+          Coordinates(x: i, y: boardSize), Coordinates(x: i, y: 0)));
       portals.add(PortalEntity(
-          Coordinates(x: -1, y: i), Coordinates(x: boardSize, y: i)));
+          Coordinates(x: -1, y: i), Coordinates(x: boardSize - 1, y: i)));
       portals.add(PortalEntity(
-          Coordinates(x: i, y: -1), Coordinates(x: i, y: boardSize)));
+          Coordinates(x: i, y: -1), Coordinates(x: i, y: boardSize - 1)));
     }
     this.entities.addAll(portals);
   }
